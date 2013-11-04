@@ -13,7 +13,7 @@ __clAmdBlasGetVersion(cl_uint* major, cl_uint* minor, cl_uint* patch)
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasGetVersion(major,minor,patch);
 
 	/* Return */
@@ -25,7 +25,7 @@ __clAmdBlasSetup(void)
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSetup();
 
 	/* Return */
@@ -35,11 +35,8 @@ __clAmdBlasSetup(void)
 void
 __clAmdBlasTeardown(void)
 {
-	/* Call native function */
-	clAmdBlasTeardown();
-
-	/* Return */
-	return status;
+	/* Call */
+	status = clAmdBlasTeardown();
 }
 
 cl_ulong
@@ -51,11 +48,11 @@ __clAmdBlasAddScratchImage(
 {
 	cl_ulong result;
 
-	/* Call native function */
+	/* Call */
 	result = clAmdBlasAddScratchImage(context, width, height, status);
 
 	/* Return */
-	return status;
+	return result;
 }
 
 clAmdBlasStatus
@@ -64,7 +61,7 @@ __clAmdBlasRemoveScratchImage(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasRemoveScratchImage(imageID);
 
 	/* Return */
@@ -88,7 +85,7 @@ __clAmdBlasSswap(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSswap(N, X, offx, incx, Y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -112,7 +109,7 @@ __clAmdBlasDswap(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDswap(N, X, offx, incx, Y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -136,7 +133,7 @@ __clAmdBlasCswap(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCswap(N, X, offx, incx, Y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -160,7 +157,7 @@ __clAmdBlasZswap(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZswap(N, X, offx, incx, Y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -182,7 +179,7 @@ __clAmdBlasSscal(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSscal(N, alpha, X, offx, incx, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -204,7 +201,7 @@ __clAmdBlasDscal(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDscal(N, alpha, X, offx, incx, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -226,7 +223,7 @@ __clAmdBlasCscal(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCscal(N, alpha, X, offx, incx, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -248,7 +245,7 @@ __clAmdBlasZscal(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZscal(N, alpha, X, offx, incx, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -270,7 +267,7 @@ __clAmdBlasCsscal(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCsscal(N, alpha, X, offx, incx, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -292,7 +289,7 @@ __clAmdBlasZdscal(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZdscal(N, alpha, X, offx, incx, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -316,7 +313,7 @@ __clAmdBlasScopy(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasScopy(N, X, offx, incx, Y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -340,7 +337,7 @@ __clAmdBlasDcopy(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDcopy(N, X, offx, incx, Y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -364,7 +361,7 @@ __clAmdBlasCcopy(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCcopy(N, X, offx, incx, Y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -388,7 +385,7 @@ __clAmdBlasZcopy(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZcopy(N, X, offx, incx, Y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -413,7 +410,7 @@ __clAmdBlasSaxpy(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSaxpy(N, alpha, X, offx, incx, Y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -438,7 +435,7 @@ __clAmdBlasDaxpy(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDaxpy(N, alpha, X, offx, incx, Y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -463,7 +460,7 @@ __clAmdBlasCaxpy(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCaxpy(N, alpha, X, offx, incx, Y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -488,7 +485,7 @@ __clAmdBlasZaxpy(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZaxpy(N, alpha, X, offx, incx, Y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -515,7 +512,7 @@ __clAmdBlasSdot(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSdot(N, dotProduct, offDP, X, offx, incx, Y, offy, incy, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -542,7 +539,7 @@ __clAmdBlasDdot(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDdot(N, dotProduct, offDP, X, offx, incx, Y, offy, incy, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -569,7 +566,7 @@ __clAmdBlasCdotu(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCdotu(N, dotProduct, offDP, X, offx, incx, Y, offy, incy, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -596,7 +593,7 @@ __clAmdBlasZdotu(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZdotu(N, dotProduct, offDP, X, offx, incx, Y, offy, incy, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -623,7 +620,7 @@ __clAmdBlasCdotc(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCdotc(N, dotProduct, offDP, X, offx, incx, Y, offy, incy, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -650,7 +647,7 @@ __clAmdBlasZdotc(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZdotc(N, dotProduct, offDP, X, offx, incx, Y, offy, incy, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -675,7 +672,7 @@ __clAmdBlasSrotg(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSrotg(SA, offSA, SB, offSB, C, offC, S, offS, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -700,7 +697,7 @@ __clAmdBlasDrotg(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDrotg(DA, offDA, DB, offDB, C, offC, S, offS, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -725,7 +722,7 @@ __clAmdBlasCrotg(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCrotg(CA, offCA, CB, offCB, C, offC, S, offS, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -750,7 +747,7 @@ __clAmdBlasZrotg(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZrotg(CA, offCA, CB, offCB, C, offC, S, offS, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -777,7 +774,7 @@ __clAmdBlasSrotmg(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSrotmg(SD1, offSD1, SD2, offSD2, SX1, offSX1, SY1, offSY1, SPARAM, offSparam, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -804,7 +801,7 @@ __clAmdBlasDrotmg(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDrotmg(DD1, offDD1, DD2, offDD2, DX1, offDX1, DY1, offDY1, DPARAM, offDparam, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -830,7 +827,7 @@ __clAmdBlasSrot(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSrot(N, X, offx, incx, Y, offy, incy, C, S, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -856,7 +853,7 @@ __clAmdBlasDrot(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDrot(N, X, offx, incx, Y, offy, incy, C, S, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -882,7 +879,7 @@ __clAmdBlasCsrot(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCsrot(N, X, offx, incx, Y, offy, incy, C, S, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -908,7 +905,7 @@ __clAmdBlasZdrot(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZdrot(N, X, offx, incx, Y, offy, incy, C, S, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -934,7 +931,7 @@ __clAmdBlasSrotm(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSrotm(N, X, offx, incx, Y, offy, incy, SPARAM, offSparam, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -960,7 +957,7 @@ __clAmdBlasDrotm(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDrotm(N, X, offx, incx, Y, offy, incy, DPARAM, offDparam, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -984,7 +981,7 @@ __clAmdBlasSnrm2(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSnrm2(N, NRM2, offNRM2, X, offx, incx, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1008,7 +1005,7 @@ __clAmdBlasDnrm2(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDnrm2(N, NRM2, offNRM2, X, offx, incx, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1032,7 +1029,7 @@ __clAmdBlasScnrm2(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasScnrm2(N, NRM2, offNRM2, X, offx, incx, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1056,7 +1053,7 @@ __clAmdBlasDznrm2(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDznrm2(N, NRM2, offNRM2, X, offx, incx, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1080,7 +1077,7 @@ __clAmdBlasiSamax(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasiSamax(N, iMax, offiMax, X, offx, incx, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1104,7 +1101,7 @@ __clAmdBlasiDamax(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasiDamax(N, iMax, offiMax, X, offx, incx, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1128,7 +1125,7 @@ __clAmdBlasiCamax(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasiCamax(N, iMax, offiMax, X, offx, incx, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1152,7 +1149,7 @@ __clAmdBlasiZamax(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasiZamax(N, iMax, offiMax, X, offx, incx, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1176,7 +1173,7 @@ __clAmdBlasSasum(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSasum(N, asum, offAsum, X, offx, incx, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1200,7 +1197,7 @@ __clAmdBlasDasum(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDasum(N, asum, offAsum, X, offx, incx, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1224,7 +1221,7 @@ __clAmdBlasScasum(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasScasum(N, asum, offAsum, X, offx, incx, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1248,7 +1245,7 @@ __clAmdBlasDzasum(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDzasum(N, asum, offAsum, X, offx, incx, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1279,7 +1276,7 @@ __clAmdBlasSgemv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSgemv(order, transA, M, N, alpha, A, lda, x, offx, incx, beta, y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1310,7 +1307,7 @@ __clAmdBlasDgemv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDgemv(order, transA, M, N, alpha, A, lda, x, offx, incx, beta, y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1341,7 +1338,7 @@ __clAmdBlasCgemv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCgemv(order, transA, M, N, alpha, A, lda, x, offx, incx, beta, y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1372,7 +1369,7 @@ __clAmdBlasZgemv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZgemv(order, transA, M, N, alpha, A, lda, x, offx, incx, beta, y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1404,7 +1401,7 @@ __clAmdBlasSgemvEx(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSgemvEx(order, transA, M, N, alpha, A, offA, lda, x, offx, incx, beta, y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1436,7 +1433,7 @@ __clAmdBlasDgemvEx(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDgemvEx(order, transA, M, N, alpha, A, offA, lda, x, offx, incx, beta, y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1468,7 +1465,7 @@ __clAmdBlasCgemvEx(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCgemvEx(order, transA, M, N, alpha, A, offA, lda, x, offx, incx, beta, y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1500,7 +1497,7 @@ __clAmdBlasZgemvEx(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZgemvEx(order, transA, M, N, alpha, A, offA, lda, x, offx, incx, beta, y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1530,7 +1527,7 @@ __clAmdBlasSsymv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSsymv(order, uplo, N, alpha, A, lda, x, offx, incx, beta, y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1560,7 +1557,7 @@ __clAmdBlasDsymv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDsymv(order, uplo, N, alpha, A, lda, x, offx, incx, beta, y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1591,7 +1588,7 @@ __clAmdBlasSsymvEx(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSsymvEx(order, uplo, N, alpha, A, offA, lda, x, offx, incx, beta, y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1622,7 +1619,7 @@ __clAmdBlasDsymvEx(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDsymvEx(order, uplo, N, alpha, A, offA, lda, x, offx, incx, beta, y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1653,7 +1650,7 @@ __clAmdBlasChemv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasChemv(order, uplo, N, alpha, A, offa, lda, X, offx, incx, beta, Y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1684,7 +1681,7 @@ __clAmdBlasZhemv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZhemv(order, uplo, N, alpha, A, offa, lda, X, offx, incx, beta, Y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1713,7 +1710,7 @@ __clAmdBlasStrmv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasStrmv(order, uplo, trans, diag, N, A, offa, lda, X, offx, incx, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1742,7 +1739,7 @@ __clAmdBlasDtrmv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDtrmv(order, uplo, trans, diag, N, A, offa, lda, X, offx, incx, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1771,7 +1768,7 @@ __clAmdBlasCtrmv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCtrmv(order, uplo, trans, diag, N, A, offa, lda, X, offx, incx, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1800,7 +1797,7 @@ __clAmdBlasZtrmv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZtrmv(order, uplo, trans, diag, N, A, offa, lda, X, offx, incx, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1828,7 +1825,7 @@ __clAmdBlasStrsv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasStrsv(order, uplo, trans, diag, N, A, offa, lda, X, offx, incx, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1856,7 +1853,7 @@ __clAmdBlasDtrsv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDtrsv(order, uplo, trans, diag, N, A, offa, lda, X, offx, incx, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1884,7 +1881,7 @@ __clAmdBlasCtrsv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCtrsv(order, uplo, trans, diag, N, A, offa, lda, X, offx, incx, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1912,7 +1909,7 @@ __clAmdBlasZtrsv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZtrsv(order, uplo, trans, diag, N, A, offa, lda, X, offx, incx, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1942,7 +1939,7 @@ __clAmdBlasSger(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSger(order, M, N, alpha, X, offx, incx, Y, offy, incy, A, offa, lda, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -1972,7 +1969,7 @@ __clAmdBlasDger(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDger(order, M, N, alpha, X, offx, incx, Y, offy, incy, A, offa, lda, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2002,7 +1999,7 @@ __clAmdBlasCgeru(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCgeru(order, M, N, alpha, X, offx, incx, Y, offy, incy, A , offa, lda, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2032,7 +2029,7 @@ __clAmdBlasZgeru(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZgeru(order, M, N, alpha, X, offx, incx, Y, offy, incy, A, offa, lda, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2062,7 +2059,7 @@ __clAmdBlasCgerc(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCgerc(order, M, N, alpha, X, offx, incx, Y, offy, incy, A , offa, lda, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2092,7 +2089,7 @@ __clAmdBlasZgerc(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZgerc(order, M, N, alpha, X, offx, incx, Y, offy, incy, A, offa, lda, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2119,7 +2116,7 @@ __clAmdBlasSsyr(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSsyr(order, uplo, N, alpha, X, offx, incx, A, offa, lda, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2146,7 +2143,7 @@ __clAmdBlasDsyr(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDsyr(order, uplo, N, alpha, X, offx, incx, A, offa, lda, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2173,7 +2170,7 @@ __clAmdBlasCher(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCher(order, uplo, N, alpha, X, offx, incx, A, offa, lda, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2200,7 +2197,7 @@ __clAmdBlasZher(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZher(order, uplo, N, alpha, X, offx, incx, A, offa, lda, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2230,7 +2227,7 @@ __clAmdBlasSsyr2(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSsyr2(order, uplo, N, alpha, X, offx, incx, Y, offy, incy, A, offa, lda, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2260,7 +2257,7 @@ __clAmdBlasDsyr2(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDsyr2(order, uplo, N, alpha, X, offx, incx, Y, offy, incy, A, offa, lda, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2290,7 +2287,7 @@ __clAmdBlasCher2(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCher2(order, uplo, N, alpha, X, offx, incx, Y, offy, incy, A, offa, lda, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2320,7 +2317,7 @@ __clAmdBlasZher2(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZher2(order, uplo, N, alpha, X, offx, incx, Y, offy, incy, A, offa, lda, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2348,7 +2345,7 @@ __clAmdBlasStpmv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasStpmv(order, uplo, trans, diag, N, AP, offa, X, offx, incx, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2376,7 +2373,7 @@ __clAmdBlasDtpmv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDtpmv(order, uplo, trans, diag, N, AP, offa, X, offx, incx, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2404,7 +2401,7 @@ __clAmdBlasCtpmv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCtpmv(order, uplo, trans, diag, N, AP, offa, X, offx, incx, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2432,7 +2429,7 @@ __clAmdBlasZtpmv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZtpmv(order, uplo, trans, diag, N, AP, offa, X, offx, incx, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2459,7 +2456,7 @@ __clAmdBlasStpsv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasStpsv(order, uplo, trans, diag, N, A, offa, X, offx, incx, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2486,7 +2483,7 @@ __clAmdBlasDtpsv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDtpsv(order, uplo, trans, diag, N, A, offa, X, offx, incx, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2513,7 +2510,7 @@ __clAmdBlasCtpsv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCtpsv(order, uplo, trans, diag, N, A, offa, X, offx, incx, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2540,7 +2537,7 @@ __clAmdBlasZtpsv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZtpsv(order, uplo, trans, diag, N, A, offa, X, offx, incx, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2570,7 +2567,7 @@ __clAmdBlasSspmv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSspmv(order, uplo, N, alpha, AP, offa, X, offx, incx, beta, Y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2600,7 +2597,7 @@ __clAmdBlasDspmv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDspmv(order, uplo, N, alpha, AP, offa, X, offx, incx, beta, Y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2630,7 +2627,7 @@ __clAmdBlasChpmv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasChpmv(order, uplo, N, alpha, AP, offa, X, offx, incx, beta, Y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2660,7 +2657,7 @@ __clAmdBlasZhpmv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZhpmv(order, uplo, N, alpha, AP, offa, X, offx, incx, beta, Y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2686,7 +2683,7 @@ __clAmdBlasSspr(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSspr(order, uplo, N, alpha, X, offx, incx, AP, offa, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2712,7 +2709,7 @@ __clAmdBlasDspr(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDspr(order, uplo, N, alpha, X, offx, incx, AP, offa, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2738,7 +2735,7 @@ __clAmdBlasChpr(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasChpr(order, uplo, N, alpha, X, offx, incx, AP, offa, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2764,7 +2761,7 @@ __clAmdBlasZhpr(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZhpr(order, uplo, N, alpha, X, offx, incx, AP, offa, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2793,7 +2790,7 @@ __clAmdBlasSspr2(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSspr2(order, uplo, N, alpha, X, offx, incx, Y, offy, incy, AP, offa, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2822,7 +2819,7 @@ __clAmdBlasDspr2(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDspr2(order, uplo, N, alpha, X, offx, incx, Y, offy, incy, AP, offa, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2851,7 +2848,7 @@ __clAmdBlasChpr2(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasChpr2(order, uplo, N, alpha, X, offx, incx, Y, offy, incy, AP, offa, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2880,7 +2877,7 @@ __clAmdBlasZhpr2(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZhpr2(order, uplo, N, alpha, X, offx, incx, Y, offy, incy, AP, offa, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2914,7 +2911,7 @@ __clAmdBlasSgbmv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSgbmv(order, trans, M, N, KL, KU, alpha, A, offa, lda, X, offx, incx, beta, Y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2948,7 +2945,7 @@ __clAmdBlasDgbmv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDgbmv(order, trans, M, N, KL, KU, alpha, A, offa, lda, X, offx, incx, beta, Y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -2982,7 +2979,7 @@ __clAmdBlasCgbmv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCgbmv(order, trans, M, N, KL, KU, alpha, A, offa, lda, X, offx, incx, beta, Y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3016,7 +3013,7 @@ __clAmdBlasZgbmv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZgbmv(order, trans, M, N, KL, KU, alpha, A, offa, lda, X, offx, incx, beta, Y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3046,7 +3043,7 @@ __clAmdBlasStbmv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasStbmv(order, uplo, trans, diag, N, K, A, offa, lda, X, offx, incx, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3076,7 +3073,7 @@ __clAmdBlasDtbmv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDtbmv(order, uplo, trans, diag, N, K, A, offa, lda, X, offx, incx, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3106,7 +3103,7 @@ __clAmdBlasCtbmv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCtbmv(order, uplo, trans, diag, N, K, A, offa, lda, X, offx, incx, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3136,7 +3133,7 @@ __clAmdBlasZtbmv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZtbmv(order, uplo, trans, diag, N, K, A, offa, lda, X, offx, incx, scratchBuff, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3168,7 +3165,7 @@ __clAmdBlasSsbmv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSsbmv(order, uplo, N, K, alpha, A, offa, lda, X, offx, incx, beta, Y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3200,7 +3197,7 @@ __clAmdBlasDsbmv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDsbmv(order, uplo, N, K, alpha, A, offa, lda, X, offx, incx, beta, Y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3232,7 +3229,7 @@ __clAmdBlasChbmv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasChbmv(order, uplo, N, K, alpha, A, offa, lda, X, offx, incx, beta, Y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3264,7 +3261,7 @@ __clAmdBlasZhbmv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZhbmv(order, uplo, N, K, alpha, A, offa, lda, X, offx, incx, beta, Y, offy, incy, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3293,7 +3290,7 @@ __clAmdBlasStbsv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasStbsv(order, uplo, trans, diag, N, K, A, offa, lda, X, offx, incx, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3322,7 +3319,7 @@ __clAmdBlasDtbsv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDtbsv(order, uplo, trans, diag, N, K, A, offa, lda, X, offx, incx, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3351,7 +3348,7 @@ __clAmdBlasCtbsv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCtbsv(order, uplo, trans, diag, N, K, A, offa, lda, X, offx, incx, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3380,7 +3377,7 @@ __clAmdBlasZtbsv(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZtbsv(order, uplo, trans, diag, N, K, A, offa, lda, X, offx, incx, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3411,7 +3408,7 @@ __clAmdBlasSgemm(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSgemm(order, transA, transB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3442,7 +3439,7 @@ __clAmdBlasDgemm(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDgemm(order, transA, transB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3473,7 +3470,7 @@ __clAmdBlasCgemm(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCgemm(order, transA, transB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3504,7 +3501,7 @@ __clAmdBlasZgemm(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZgemm(order, transA, transB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3538,7 +3535,7 @@ __clAmdBlasSgemmEx(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSgemmEx(order, transA, transB, M, N, K, alpha, A, offA, lda, B, offB, ldb, beta, C, offC, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3572,7 +3569,7 @@ __clAmdBlasDgemmEx(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDgemmEx(order, transA, transB, M, N, K, alpha, A, offA, lda, B, offB, ldb, beta, C, offC, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3606,7 +3603,7 @@ __clAmdBlasCgemmEx(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCgemmEx(order, transA, transB, M, N, K, alpha, A, offA, lda, B, offB, ldb, beta, C, offC, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3640,7 +3637,7 @@ __clAmdBlasZgemmEx(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZgemmEx(order, transA, transB, M, N, K, alpha, A, offA, lda, B, offB, ldb, beta, C, offC, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3669,7 +3666,7 @@ __clAmdBlasStrmm(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasStrmm(order, side, uplo, transA, diag, M, N, alpha, A, lda, B, ldb, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3698,7 +3695,7 @@ __clAmdBlasDtrmm(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDtrmm(order, side, uplo, transA, diag, M, N, alpha, A, lda, B, ldb, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3727,7 +3724,7 @@ __clAmdBlasCtrmm(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCtrmm(order, side, uplo, transA, diag, M, N, alpha, A, lda, B, ldb, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3756,7 +3753,7 @@ __clAmdBlasZtrmm(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZtrmm(order, side, uplo, transA, diag, M, N, alpha, A, lda, B, ldb, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3787,7 +3784,7 @@ __clAmdBlasStrmmEx(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasStrmmEx(order, side, uplo, transA, diag, M, N, alpha, A, offA, lda, B, offB, ldb, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3818,7 +3815,7 @@ __clAmdBlasDtrmmEx(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDtrmmEx(order, side, uplo, transA, diag, M, N, alpha, A, offA, lda, B, offB, ldb, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3849,7 +3846,7 @@ __clAmdBlasCtrmmEx(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCtrmmEx(order, side, uplo, transA, diag, M, N, alpha, A, offA, lda, B, offB, ldb, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3880,7 +3877,7 @@ __clAmdBlasZtrmmEx(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZtrmmEx(order, side, uplo, transA, diag, M, N, alpha, A, offA, lda, B, offB, ldb, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3909,7 +3906,7 @@ __clAmdBlasStrsm(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasStrsm(order, side, uplo, transA, diag, M, N, alpha, A, lda, B, ldb, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3938,7 +3935,7 @@ __clAmdBlasDtrsm(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDtrsm(order, side, uplo, transA, diag, M, N, alpha, A, lda, B, ldb, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3967,7 +3964,7 @@ __clAmdBlasCtrsm(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCtrsm(order, side, uplo, transA, diag, M, N, alpha, A, lda, B, ldb, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -3996,7 +3993,7 @@ __clAmdBlasZtrsm(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZtrsm(order, side, uplo, transA, diag, M, N, alpha, A, lda, B, ldb, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4027,7 +4024,7 @@ __clAmdBlasStrsmEx(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasStrsmEx(order, side, uplo, transA, diag, M, N, alpha, A, offA, lda, B, offB, ldb, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4058,7 +4055,7 @@ __clAmdBlasDtrsmEx(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDtrsmEx(order, side, uplo, transA, diag, M, N, alpha, A, offA, lda, B, offB, ldb, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4089,7 +4086,7 @@ __clAmdBlasCtrsmEx(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCtrsmEx(order, side, uplo, transA, diag, M, N, alpha, A, offA, lda, B, offB, ldb, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4120,7 +4117,7 @@ __clAmdBlasZtrsmEx(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZtrsmEx(order, side, uplo, transA, diag, M, N, alpha, A, offA, lda, B, offB, ldb, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4148,7 +4145,7 @@ __clAmdBlasSsyrk(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSsyrk(order, uplo, transA, N, K, alpha, A, lda, beta, C, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4176,7 +4173,7 @@ __clAmdBlasDsyrk(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDsyrk(order, uplo, transA, N, K, alpha, A, lda, beta, C, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4204,7 +4201,7 @@ __clAmdBlasCsyrk(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCsyrk(order, uplo, transA, N, K, alpha, A, lda, beta, C, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4232,7 +4229,7 @@ __clAmdBlasZsyrk(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZsyrk(order, uplo, transA, N, K, alpha, A, lda, beta, C, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4262,7 +4259,7 @@ __clAmdBlasSsyrkEx(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSsyrkEx(order, uplo, transA, N, K, alpha, A, offA, lda, beta, C, offC, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4292,7 +4289,7 @@ __clAmdBlasDsyrkEx(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDsyrkEx(order, uplo, transA, N, K, alpha, A, offA, lda, beta, C, offC, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4322,7 +4319,7 @@ __clAmdBlasCsyrkEx(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCsyrkEx(order, uplo, transA, N, K, alpha, A, offA, lda, beta, C, offC, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4352,7 +4349,7 @@ __clAmdBlasZsyrkEx(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZsyrkEx(order, uplo, transA, N, K, alpha, A, offA, lda, beta, C, offC, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4382,7 +4379,7 @@ __clAmdBlasSsyr2k(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSsyr2k(order, uplo, transAB, N, K, alpha, A, lda, B, ldb, beta, C, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4412,7 +4409,7 @@ __clAmdBlasDsyr2k(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDsyr2k(order, uplo, transAB, N, K, alpha, A, lda, B, ldb, beta, C, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4442,7 +4439,7 @@ __clAmdBlasCsyr2k(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCsyr2k(order, uplo, transAB, N, K, alpha, A, lda, B, ldb, beta, C, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4472,7 +4469,7 @@ __clAmdBlasZsyr2k(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZsyr2k(order, uplo, transAB, N, K, alpha, A, lda, B, ldb, beta, C, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4505,7 +4502,7 @@ __clAmdBlasSsyr2kEx(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSsyr2kEx(order, uplo, transAB, N, K, alpha, A, offA, lda, B, offB, ldb, beta, C, offC, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4538,7 +4535,7 @@ __clAmdBlasDsyr2kEx(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDsyr2kEx(order, uplo, transAB, N, K, alpha, A, offA, lda, B, offB, ldb, beta, C, offC, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4571,7 +4568,7 @@ __clAmdBlasCsyr2kEx(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCsyr2kEx(order, uplo, transAB, N, K, alpha, A, offA, lda, B, offB, ldb, beta, C, offC, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4604,7 +4601,7 @@ __clAmdBlasZsyr2kEx(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZsyr2kEx(order, uplo, transAB, N, K, alpha, A, offA, lda, B, offB, ldb, beta, C, offC, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4637,7 +4634,7 @@ __clAmdBlasSsymm(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasSsymm(order, side, uplo, M, N, alpha, A, offa, lda, B, offb, ldb, beta, C, offc, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4670,7 +4667,7 @@ __clAmdBlasDsymm(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasDsymm(order, side, uplo, M, N, alpha, A, offa, lda, B, offb, ldb, beta, C, offc, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4703,7 +4700,7 @@ __clAmdBlasCsymm(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCsymm(order, side, uplo, M, N, alpha, A, offa, lda, B, offb, ldb, beta, C, offc, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4736,7 +4733,7 @@ __clAmdBlasZsymm(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZsymm(order, side, uplo, M, N, alpha, A, offa, lda, B, offb, ldb, beta, C, offc, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4769,7 +4766,7 @@ __clAmdBlasChemm(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasChemm(order, side, uplo, M, N, alpha, A, offa, lda, B, offb, ldb, beta, C, offc, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4802,7 +4799,7 @@ __clAmdBlasZhemm(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZhemm(order, side, uplo, M, N, alpha, A, offa, lda, B, offb, ldb, beta, C, offc, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4832,7 +4829,7 @@ __clAmdBlasCherk(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCherk(order, uplo, transA, N, K, alpha, A, offa, lda, beta, C, offc, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4862,8 +4859,8 @@ __clAmdBlasZherk(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
-	status = clAmdBlasZherk(order, uplo, transA, N, K, double alpha, A, offa, lda, double beta, C, offc, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
+	/* Call */
+	status = clAmdBlasZherk(order, uplo, transA, N, K, alpha, A, offa, lda, beta, C, offc, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
 	return status;
@@ -4895,7 +4892,7 @@ __clAmdBlasCher2k(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasCher2k(order, uplo, trans, N, K, alpha, A, offa, lda, B, offb, ldb, beta, C, offc, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
@@ -4928,7 +4925,7 @@ __clAmdBlasZher2k(
 {
 	clAmdBlasStatus status;
 
-	/* Call native function */
+	/* Call */
 	status = clAmdBlasZher2k(order, uplo, trans, N, K, alpha, A, offa, lda, B, offb, ldb, beta, C, offc, ldc, numCommandQueues, commandQueues, numEventsInWaitList, eventWaitList, events);
 
 	/* Return */
