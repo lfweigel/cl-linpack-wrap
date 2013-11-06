@@ -15,7 +15,7 @@ extern char *clblas_error_not_impl;
 #define __NOT_IMPL__  \
     fatal("%s: clBlas call not implemented.\n%s", __FUNCTION__, clblas_error_not_impl);
 
-/* Set to 1 so all double precision data are treated as single precision */
+/* all double precision data are treated as single precision */
 #define DOUBLE_AS_SINGLE 1
 
 /* Enums */
