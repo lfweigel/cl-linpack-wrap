@@ -7,3363 +7,552 @@ extern "C" {
 
 /* Includes */
 #include <clAmdBlas.h>
+#include "f2c.h"
+
+extern char *clblas_error_not_impl;
 
 /* Defines */
+#define __NOT_IMPL__  \
+    fatal("%s: clBlas call not implemented.\n%s", __FUNCTION__, clblas_error_not_impl);
+
+/* Enums */
+enum CBLAS_ORDER {CblasRowMajor=101, CblasColMajor=102};
+enum CBLAS_TRANSPOSE {CblasNoTrans=111, CblasTrans=112, CblasConjTrans=113};
+enum CBLAS_UPLO {CblasUpper=121, CblasLower=122};
+enum CBLAS_DIAG {CblasNonUnit=131, CblasUnit=132};
+enum CBLAS_SIDE {CblasLeft=141, CblasRight=142};
 
 /* Functions */
-clAmdBlasStatus
-__clAmdBlasGetVersion(cl_uint* major, cl_uint* minor, cl_uint* patch);
-
-clAmdBlasStatus
-__clAmdBlasSetup(void);
-
-void
-__clAmdBlasTeardown(void);
-
-cl_ulong
-__clAmdBlasAddScratchImage(
-    cl_context context,
-    size_t width,
-    size_t height,
-    clAmdBlasStatus *status);
-
-clAmdBlasStatus
-__clAmdBlasRemoveScratchImage(
-    cl_ulong imageID);
-
-clAmdBlasStatus
-__clAmdBlasSswap(
-    size_t N,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDswap(
-    size_t N,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCswap(
-    size_t N,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZswap(
-    size_t N,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasSscal(
-    size_t N,
-    cl_float alpha,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDscal(
-    size_t N,
-    cl_double alpha,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCscal(
-    size_t N,
-    cl_float2 alpha,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZscal(
-    size_t N,
-    cl_double2 alpha,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCsscal(
-    size_t N,
-    cl_float alpha,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZdscal(
-    size_t N,
-    cl_double alpha,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasScopy(
-    size_t N,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDcopy(
-    size_t N,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCcopy(
-    size_t N,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZcopy(
-    size_t N,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasSaxpy(
-    size_t N,
-    cl_float alpha,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDaxpy(
-    size_t N,
-    cl_double alpha,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCaxpy(
-    size_t N,
-    cl_float2 alpha,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZaxpy(
-    size_t N,
-    cl_double2 alpha,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasSdot(
-    size_t N,
-    cl_mem dotProduct,
-    size_t offDP,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    const cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDdot(
-    size_t N,
-    cl_mem dotProduct,
-    size_t offDP,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    const cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCdotu(
-    size_t N,
-    cl_mem dotProduct,
-    size_t offDP,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    const cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZdotu(
-    size_t N,
-    cl_mem dotProduct,
-    size_t offDP,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    const cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCdotc(
-    size_t N,
-    cl_mem dotProduct,
-    size_t offDP,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    const cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZdotc(
-    size_t N,
-    cl_mem dotProduct,
-    size_t offDP,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    const cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasSrotg(
-    cl_mem SA,
-    size_t offSA,
-    cl_mem SB,
-    size_t offSB,
-    cl_mem C,
-    size_t offC,
-    cl_mem S,
-    size_t offS,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDrotg(
-    cl_mem DA,
-    size_t offDA,
-    cl_mem DB,
-    size_t offDB,
-    cl_mem C,
-    size_t offC,
-    cl_mem S,
-    size_t offS,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCrotg(
-    cl_mem CA,
-    size_t offCA,
-    cl_mem CB,
-    size_t offCB,
-    cl_mem C,
-    size_t offC,
-    cl_mem S,
-    size_t offS,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZrotg(
-    cl_mem CA,
-    size_t offCA,
-    cl_mem CB,
-    size_t offCB,
-    cl_mem C,
-    size_t offC,
-    cl_mem S,
-    size_t offS,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasSrotmg(
-    cl_mem SD1,
-    size_t offSD1,
-    cl_mem SD2,
-    size_t offSD2,
-    cl_mem SX1,
-    size_t offSX1,
-    const cl_mem SY1,
-    size_t offSY1,
-    cl_mem SPARAM,
-    size_t offSparam,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDrotmg(
-    cl_mem DD1,
-    size_t offDD1,
-    cl_mem DD2,
-    size_t offDD2,
-    cl_mem DX1,
-    size_t offDX1,
-    const cl_mem DY1,
-    size_t offDY1,
-    cl_mem DPARAM,
-    size_t offDparam,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasSrot(
-    size_t N,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_float C,
-    cl_float S,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDrot(
-    size_t N,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_double C,
-    cl_double S,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCsrot(
-    size_t N,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_float C,
-    cl_float S,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZdrot(
-    size_t N,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_double C,
-    cl_double S,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasSrotm(
-    size_t N,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    const cl_mem SPARAM,
-    size_t offSparam,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDrotm(
-    size_t N,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    const cl_mem DPARAM,
-    size_t offDparam,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasSnrm2(
-    size_t N,
-    cl_mem NRM2,
-    size_t offNRM2,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDnrm2(
-    size_t N,
-    cl_mem NRM2,
-    size_t offNRM2,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasScnrm2(
-    size_t N,
-    cl_mem NRM2,
-    size_t offNRM2,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDznrm2(
-    size_t N,
-    cl_mem NRM2,
-    size_t offNRM2,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasiSamax(
-    size_t N,
-    cl_mem iMax,
-    size_t offiMax,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasiDamax(
-    size_t N,
-    cl_mem iMax,
-    size_t offiMax,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasiCamax(
-    size_t N,
-    cl_mem iMax,
-    size_t offiMax,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasiZamax(
-    size_t N,
-    cl_mem iMax,
-    size_t offiMax,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasSasum(
-    size_t N,
-    cl_mem asum,
-    size_t offAsum,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDasum(
-    size_t N,
-    cl_mem asum,
-    size_t offAsum,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasScasum(
-    size_t N,
-    cl_mem asum,
-    size_t offAsum,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDzasum(
-    size_t N,
-    cl_mem asum,
-    size_t offAsum,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasSgemv(
-    clAmdBlasOrder order,
-    clAmdBlasTranspose transA,
-    size_t M,
-    size_t N,
-    cl_float alpha,
-    const cl_mem A,
-    size_t lda,
-    const cl_mem x,
-    size_t offx,
-    int incx,
-    cl_float beta,
-    cl_mem y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDgemv(
-    clAmdBlasOrder order,
-    clAmdBlasTranspose transA,
-    size_t M,
-    size_t N,
-    cl_double alpha,
-    const cl_mem A,
-    size_t lda,
-    const cl_mem x,
-    size_t offx,
-    int incx,
-    cl_double beta,
-    cl_mem y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCgemv(
-    clAmdBlasOrder order,
-    clAmdBlasTranspose transA,
-    size_t M,
-    size_t N,
-    FloatComplex alpha,
-    const cl_mem A,
-    size_t lda,
-    const cl_mem x,
-    size_t offx,
-    int incx,
-    FloatComplex beta,
-    cl_mem y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZgemv(
-    clAmdBlasOrder order,
-    clAmdBlasTranspose transA,
-    size_t M,
-    size_t N,
-    DoubleComplex alpha,
-    const cl_mem A,
-    size_t lda,
-    const cl_mem x,
-    size_t offx,
-    int incx,
-    DoubleComplex beta,
-    cl_mem y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasSgemvEx(
-    clAmdBlasOrder order,
-    clAmdBlasTranspose transA,
-    size_t M,
-    size_t N,
-    cl_float alpha,
-    const cl_mem A,
-    size_t offA,
-    size_t lda,
-    const cl_mem x,
-    size_t offx,
-    int incx,
-    cl_float beta,
-    cl_mem y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDgemvEx(
-    clAmdBlasOrder order,
-    clAmdBlasTranspose transA,
-    size_t M,
-    size_t N,
-    cl_double alpha,
-    const cl_mem A,
-    size_t offA,
-    size_t lda,
-    const cl_mem x,
-    size_t offx,
-    int incx,
-    cl_double beta,
-    cl_mem y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCgemvEx(
-    clAmdBlasOrder order,
-    clAmdBlasTranspose transA,
-    size_t M,
-    size_t N,
-    FloatComplex alpha,
-    const cl_mem A,
-    size_t offA,
-    size_t lda,
-    const cl_mem x,
-    size_t offx,
-    int incx,
-    FloatComplex beta,
-    cl_mem y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZgemvEx(
-    clAmdBlasOrder order,
-    clAmdBlasTranspose transA,
-    size_t M,
-    size_t N,
-    DoubleComplex alpha,
-    const cl_mem A,
-    size_t offA,
-    size_t lda,
-    const cl_mem x,
-    size_t offx,
-    int incx,
-    DoubleComplex beta,
-    cl_mem y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasSsymv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    cl_float alpha,
-    const cl_mem A,
-    size_t lda,
-    const cl_mem x,
-    size_t offx,
-    int incx,
-    cl_float beta,
-    cl_mem y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDsymv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    cl_double alpha,
-    const cl_mem A,
-    size_t lda,
-    const cl_mem x,
-    size_t offx,
-    int incx,
-    cl_double beta,
-    cl_mem y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasSsymvEx(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    cl_float alpha,
-    const cl_mem A,
-    size_t offA,
-    size_t lda,
-    const cl_mem x,
-    size_t offx,
-    int incx,
-    cl_float beta,
-    cl_mem y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDsymvEx(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    cl_double alpha,
-    const cl_mem A,
-    size_t offA,
-    size_t lda,
-    const cl_mem x,
-    size_t offx,
-    int incx,
-    cl_double beta,
-    cl_mem y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasChemv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    FloatComplex alpha,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    FloatComplex beta,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZhemv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    DoubleComplex alpha,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    DoubleComplex beta,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasStrmv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose trans,
-    clAmdBlasDiag diag,
-    size_t N,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_mem X,
-    size_t offx,
-    int incx,
- cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDtrmv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose trans,
-    clAmdBlasDiag diag,
-    size_t N,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_mem X,
-    size_t offx,
-    int incx,
- cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCtrmv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose trans,
-    clAmdBlasDiag diag,
-    size_t N,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_mem X,
-    size_t offx,
-    int incx,
- cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZtrmv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose trans,
-    clAmdBlasDiag diag,
-    size_t N,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_mem X,
-    size_t offx,
-    int incx,
- cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasStrsv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose trans,
-    clAmdBlasDiag diag,
-    size_t N,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDtrsv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose trans,
-    clAmdBlasDiag diag,
-    size_t N,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCtrsv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose trans,
-    clAmdBlasDiag diag,
-    size_t N,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZtrsv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose trans,
-    clAmdBlasDiag diag,
-    size_t N,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasSger(
-    clAmdBlasOrder order,
-    size_t M,
-    size_t N,
-    cl_float alpha,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    const cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDger(
-    clAmdBlasOrder order,
-    size_t M,
-    size_t N,
-    cl_double alpha,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    const cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCgeru(
-    clAmdBlasOrder order,
-    size_t M,
-    size_t N,
-    cl_float2 alpha,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    const cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_mem A ,
-    size_t offa,
-    size_t lda,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZgeru(
-    clAmdBlasOrder order,
-    size_t M,
-    size_t N,
-    cl_double2 alpha,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    const cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCgerc(
-    clAmdBlasOrder order,
-    size_t M,
-    size_t N,
-    cl_float2 alpha,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    const cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_mem A ,
-    size_t offa,
-    size_t lda,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZgerc(
-    clAmdBlasOrder order,
-    size_t M,
-    size_t N,
-    cl_double2 alpha,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    const cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasSsyr(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    cl_float alpha,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_uint numCommandQueues,
-    cl_command_queue* commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event* eventWaitList,
-    cl_event* events);
-
-clAmdBlasStatus
-__clAmdBlasDsyr(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    cl_double alpha,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_uint numCommandQueues,
-    cl_command_queue* commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event* eventWaitList,
-    cl_event* events);
-
-clAmdBlasStatus
-__clAmdBlasCher(
- clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    cl_float alpha,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_uint numCommandQueues,
-    cl_command_queue* commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event* eventWaitList,
-    cl_event* events);
-
-clAmdBlasStatus
-__clAmdBlasZher(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    cl_double alpha,
-    const cl_mem X,
-    size_t offx,
-    int incx,
- cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_uint numCommandQueues,
-    cl_command_queue* commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event* eventWaitList,
-    cl_event* events);
-
-clAmdBlasStatus
-__clAmdBlasSsyr2(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    cl_float alpha,
-    const cl_mem X,
-    size_t offx,
-    int incx,
- const cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_uint numCommandQueues,
-    cl_command_queue* commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event* eventWaitList,
-    cl_event* events);
-
-clAmdBlasStatus
-__clAmdBlasDsyr2(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    cl_double alpha,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    const cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_uint numCommandQueues,
-    cl_command_queue* commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event* eventWaitList,
-    cl_event* events);
-
-clAmdBlasStatus
-__clAmdBlasCher2(
- clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    cl_float2 alpha,
-    const cl_mem X,
-    size_t offx,
-    int incx,
- const cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_uint numCommandQueues,
-    cl_command_queue* commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event* eventWaitList,
-    cl_event* events);
-
-clAmdBlasStatus
-__clAmdBlasZher2(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    cl_double2 alpha,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    const cl_mem Y,
-    size_t offy,
-    int incy,
- cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_uint numCommandQueues,
-    cl_command_queue* commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event* eventWaitList,
-    cl_event* events);
-
-clAmdBlasStatus
-__clAmdBlasStpmv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose trans,
-    clAmdBlasDiag diag,
-    size_t N,
-    const cl_mem AP,
-    size_t offa,
-    cl_mem X,
-    size_t offx,
-    int incx,
- cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDtpmv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose trans,
-    clAmdBlasDiag diag,
-    size_t N,
-    const cl_mem AP,
-    size_t offa,
-    cl_mem X,
-    size_t offx,
-    int incx,
- cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCtpmv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose trans,
-    clAmdBlasDiag diag,
-    size_t N,
-    const cl_mem AP,
-    size_t offa,
-    cl_mem X,
-    size_t offx,
-    int incx,
- cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZtpmv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose trans,
-    clAmdBlasDiag diag,
-    size_t N,
-    const cl_mem AP,
-    size_t offa,
-    cl_mem X,
-    size_t offx,
-    int incx,
- cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasStpsv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose trans,
-    clAmdBlasDiag diag,
-    size_t N,
-    const cl_mem A,
-    size_t offa,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDtpsv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose trans,
-    clAmdBlasDiag diag,
-    size_t N,
-    const cl_mem A,
-    size_t offa,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCtpsv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose trans,
-    clAmdBlasDiag diag,
-    size_t N,
-    const cl_mem A,
-    size_t offa,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZtpsv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose trans,
-    clAmdBlasDiag diag,
-    size_t N,
-    const cl_mem A,
-    size_t offa,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasSspmv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    cl_float alpha,
-    const cl_mem AP,
-    size_t offa,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_float beta,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDspmv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    cl_double alpha,
-    const cl_mem AP,
-    size_t offa,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_double beta,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasChpmv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    cl_float2 alpha,
-    const cl_mem AP,
-    size_t offa,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_float2 beta,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZhpmv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    cl_double2 alpha,
-    const cl_mem AP,
-    size_t offa,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_double2 beta,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasSspr(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    cl_float alpha,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem AP,
-    size_t offa,
-    cl_uint numCommandQueues,
-    cl_command_queue* commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event* eventWaitList,
-    cl_event* events);
-
-clAmdBlasStatus
-__clAmdBlasDspr(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    cl_double alpha,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem AP,
-    size_t offa,
-    cl_uint numCommandQueues,
-    cl_command_queue* commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event* eventWaitList,
-    cl_event* events);
-
-clAmdBlasStatus
-__clAmdBlasChpr(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    cl_float alpha,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem AP,
-    size_t offa,
-    cl_uint numCommandQueues,
-    cl_command_queue* commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event* eventWaitList,
-    cl_event* events);
-
-clAmdBlasStatus
-__clAmdBlasZhpr(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    cl_double alpha,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem AP,
-    size_t offa,
-    cl_uint numCommandQueues,
-    cl_command_queue* commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event* eventWaitList,
-    cl_event* events);
-
-clAmdBlasStatus
-__clAmdBlasSspr2(
- clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    cl_float alpha,
-    const cl_mem X,
-    size_t offx,
-    int incx,
- const cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_mem AP,
-    size_t offa,
-    cl_uint numCommandQueues,
-    cl_command_queue* commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event* eventWaitList,
-    cl_event* events);
-
-clAmdBlasStatus
-__clAmdBlasDspr2(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    cl_double alpha,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    const cl_mem Y,
-    size_t offy,
-    int incy,
- cl_mem AP,
-    size_t offa,
-    cl_uint numCommandQueues,
-    cl_command_queue* commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event* eventWaitList,
-    cl_event* events);
-
-clAmdBlasStatus
-__clAmdBlasChpr2(
- clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    cl_float2 alpha,
-    const cl_mem X,
-    size_t offx,
-    int incx,
- const cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_mem AP,
-    size_t offa,
-    cl_uint numCommandQueues,
-    cl_command_queue* commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event* eventWaitList,
-    cl_event* events);
-
-clAmdBlasStatus
-__clAmdBlasZhpr2(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    cl_double2 alpha,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    const cl_mem Y,
-    size_t offy,
-    int incy,
- cl_mem AP,
-    size_t offa,
-    cl_uint numCommandQueues,
-    cl_command_queue* commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event* eventWaitList,
-    cl_event* events);
-
-clAmdBlasStatus
-__clAmdBlasSgbmv(
-    clAmdBlasOrder order,
-    clAmdBlasTranspose trans,
-    size_t M,
-    size_t N,
-    size_t KL,
-    size_t KU,
-    cl_float alpha,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_float beta,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDgbmv(
-    clAmdBlasOrder order,
-    clAmdBlasTranspose trans,
-    size_t M,
-    size_t N,
-    size_t KL,
-    size_t KU,
-    cl_double alpha,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_double beta,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCgbmv(
-    clAmdBlasOrder order,
-    clAmdBlasTranspose trans,
-    size_t M,
-    size_t N,
-    size_t KL,
-    size_t KU,
-    cl_float2 alpha,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_float2 beta,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZgbmv(
-    clAmdBlasOrder order,
-    clAmdBlasTranspose trans,
-    size_t M,
-    size_t N,
-    size_t KL,
-    size_t KU,
-    cl_double2 alpha,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_double2 beta,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasStbmv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose trans,
-    clAmdBlasDiag diag,
-    size_t N,
-    size_t K,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDtbmv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose trans,
-    clAmdBlasDiag diag,
-    size_t N,
-    size_t K,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCtbmv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose trans,
-    clAmdBlasDiag diag,
-    size_t N,
-    size_t K,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZtbmv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose trans,
-    clAmdBlasDiag diag,
-    size_t N,
-    size_t K,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_mem scratchBuff,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasSsbmv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    size_t K,
-    cl_float alpha,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_float beta,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDsbmv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    size_t K,
-    cl_double alpha,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_double beta,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasChbmv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    size_t K,
-    cl_float2 alpha,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_float2 beta,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZhbmv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    size_t N,
-    size_t K,
-    cl_double2 alpha,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    const cl_mem X,
-    size_t offx,
-    int incx,
-    cl_double2 beta,
-    cl_mem Y,
-    size_t offy,
-    int incy,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
- clAmdBlasStatus
-__clAmdBlasStbsv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose trans,
-    clAmdBlasDiag diag,
-    size_t N,
-    size_t K,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDtbsv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose trans,
-    clAmdBlasDiag diag,
-    size_t N,
-    size_t K,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCtbsv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose trans,
-    clAmdBlasDiag diag,
-    size_t N,
-    size_t K,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZtbsv(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose trans,
-    clAmdBlasDiag diag,
-    size_t N,
-    size_t K,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    cl_mem X,
-    size_t offx,
-    int incx,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasSgemm(
-    clAmdBlasOrder order,
-    clAmdBlasTranspose transA,
-    clAmdBlasTranspose transB,
-    size_t M,
-    size_t N,
-    size_t K,
-    cl_float alpha,
-    const cl_mem A,
-    size_t lda,
-    const cl_mem B,
-    size_t ldb,
-    cl_float beta,
-    cl_mem C,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDgemm(
-    clAmdBlasOrder order,
-    clAmdBlasTranspose transA,
-    clAmdBlasTranspose transB,
-    size_t M,
-    size_t N,
-    size_t K,
-    cl_double alpha,
-    const cl_mem A,
-    size_t lda,
-    const cl_mem B,
-    size_t ldb,
-    cl_double beta,
-    cl_mem C,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCgemm(
-    clAmdBlasOrder order,
-    clAmdBlasTranspose transA,
-    clAmdBlasTranspose transB,
-    size_t M,
-    size_t N,
-    size_t K,
-    FloatComplex alpha,
-    const cl_mem A,
-    size_t lda,
-    const cl_mem B,
-    size_t ldb,
-    FloatComplex beta,
-    cl_mem C,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZgemm(
-    clAmdBlasOrder order,
-    clAmdBlasTranspose transA,
-    clAmdBlasTranspose transB,
-    size_t M,
-    size_t N,
-    size_t K,
-    DoubleComplex alpha,
-    const cl_mem A,
-    size_t lda,
-    const cl_mem B,
-    size_t ldb,
-    DoubleComplex beta,
-    cl_mem C,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasSgemmEx(
-    clAmdBlasOrder order,
-    clAmdBlasTranspose transA,
-    clAmdBlasTranspose transB,
-    size_t M,
-    size_t N,
-    size_t K,
-    cl_float alpha,
-    const cl_mem A,
-    size_t offA,
-    size_t lda,
-    const cl_mem B,
-    size_t offB,
-    size_t ldb,
-    cl_float beta,
-    cl_mem C,
-    size_t offC,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDgemmEx(
-    clAmdBlasOrder order,
-    clAmdBlasTranspose transA,
-    clAmdBlasTranspose transB,
-    size_t M,
-    size_t N,
-    size_t K,
-    cl_double alpha,
-    const cl_mem A,
-    size_t offA,
-    size_t lda,
-    const cl_mem B,
-    size_t offB,
-    size_t ldb,
-    cl_double beta,
-    cl_mem C,
-    size_t offC,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCgemmEx(
-    clAmdBlasOrder order,
-    clAmdBlasTranspose transA,
-    clAmdBlasTranspose transB,
-    size_t M,
-    size_t N,
-    size_t K,
-    FloatComplex alpha,
-    const cl_mem A,
-    size_t offA,
-    size_t lda,
-    const cl_mem B,
-    size_t offB,
-    size_t ldb,
-    FloatComplex beta,
-    cl_mem C,
-    size_t offC,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZgemmEx(
-    clAmdBlasOrder order,
-    clAmdBlasTranspose transA,
-    clAmdBlasTranspose transB,
-    size_t M,
-    size_t N,
-    size_t K,
-    DoubleComplex alpha,
-    const cl_mem A,
-    size_t offA,
-    size_t lda,
-    const cl_mem B,
-    size_t offB,
-    size_t ldb,
-    DoubleComplex beta,
-    cl_mem C,
-    size_t offC,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasStrmm(
-    clAmdBlasOrder order,
-    clAmdBlasSide side,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transA,
-    clAmdBlasDiag diag,
-    size_t M,
-    size_t N,
-    cl_float alpha,
-    const cl_mem A,
-    size_t lda,
-    cl_mem B,
-    size_t ldb,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDtrmm(
-    clAmdBlasOrder order,
-    clAmdBlasSide side,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transA,
-    clAmdBlasDiag diag,
-    size_t M,
-    size_t N,
-    cl_double alpha,
-    const cl_mem A,
-    size_t lda,
-    cl_mem B,
-    size_t ldb,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCtrmm(
-    clAmdBlasOrder order,
-    clAmdBlasSide side,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transA,
-    clAmdBlasDiag diag,
-    size_t M,
-    size_t N,
-    FloatComplex alpha,
-    const cl_mem A,
-    size_t lda,
-    cl_mem B,
-    size_t ldb,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZtrmm(
-    clAmdBlasOrder order,
-    clAmdBlasSide side,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transA,
-    clAmdBlasDiag diag,
-    size_t M,
-    size_t N,
-    DoubleComplex alpha,
-    const cl_mem A,
-    size_t lda,
-    cl_mem B,
-    size_t ldb,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasStrmmEx(
-    clAmdBlasOrder order,
-    clAmdBlasSide side,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transA,
-    clAmdBlasDiag diag,
-    size_t M,
-    size_t N,
-    cl_float alpha,
-    const cl_mem A,
-    size_t offA,
-    size_t lda,
-    cl_mem B,
-    size_t offB,
-    size_t ldb,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDtrmmEx(
-    clAmdBlasOrder order,
-    clAmdBlasSide side,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transA,
-    clAmdBlasDiag diag,
-    size_t M,
-    size_t N,
-    cl_double alpha,
-    const cl_mem A,
-    size_t offA,
-    size_t lda,
-    cl_mem B,
-    size_t offB,
-    size_t ldb,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCtrmmEx(
-    clAmdBlasOrder order,
-    clAmdBlasSide side,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transA,
-    clAmdBlasDiag diag,
-    size_t M,
-    size_t N,
-    FloatComplex alpha,
-    const cl_mem A,
-    size_t offA,
-    size_t lda,
-    cl_mem B,
-    size_t offB,
-    size_t ldb,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZtrmmEx(
-    clAmdBlasOrder order,
-    clAmdBlasSide side,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transA,
-    clAmdBlasDiag diag,
-    size_t M,
-    size_t N,
-    DoubleComplex alpha,
-    const cl_mem A,
-    size_t offA,
-    size_t lda,
-    cl_mem B,
-    size_t offB,
-    size_t ldb,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasStrsm(
-    clAmdBlasOrder order,
-    clAmdBlasSide side,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transA,
-    clAmdBlasDiag diag,
-    size_t M,
-    size_t N,
-    cl_float alpha,
-    const cl_mem A,
-    size_t lda,
-    cl_mem B,
-    size_t ldb,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDtrsm(
-    clAmdBlasOrder order,
-    clAmdBlasSide side,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transA,
-    clAmdBlasDiag diag,
-    size_t M,
-    size_t N,
-    cl_double alpha,
-    const cl_mem A,
-    size_t lda,
-    cl_mem B,
-    size_t ldb,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCtrsm(
-    clAmdBlasOrder order,
-    clAmdBlasSide side,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transA,
-    clAmdBlasDiag diag,
-    size_t M,
-    size_t N,
-    FloatComplex alpha,
-    const cl_mem A,
-    size_t lda,
-    cl_mem B,
-    size_t ldb,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZtrsm(
-    clAmdBlasOrder order,
-    clAmdBlasSide side,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transA,
-    clAmdBlasDiag diag,
-    size_t M,
-    size_t N,
-    DoubleComplex alpha,
-    const cl_mem A,
-    size_t lda,
-    cl_mem B,
-    size_t ldb,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasStrsmEx(
-    clAmdBlasOrder order,
-    clAmdBlasSide side,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transA,
-    clAmdBlasDiag diag,
-    size_t M,
-    size_t N,
-    cl_float alpha,
-    const cl_mem A,
-    size_t offA,
-    size_t lda,
-    cl_mem B,
-    size_t offB,
-    size_t ldb,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDtrsmEx(
-    clAmdBlasOrder order,
-    clAmdBlasSide side,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transA,
-    clAmdBlasDiag diag,
-    size_t M,
-    size_t N,
-    cl_double alpha,
-    const cl_mem A,
-    size_t offA,
-    size_t lda,
-    cl_mem B,
-    size_t offB,
-    size_t ldb,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCtrsmEx(
-    clAmdBlasOrder order,
-    clAmdBlasSide side,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transA,
-    clAmdBlasDiag diag,
-    size_t M,
-    size_t N,
-    FloatComplex alpha,
-    const cl_mem A,
-    size_t offA,
-    size_t lda,
-    cl_mem B,
-    size_t offB,
-    size_t ldb,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZtrsmEx(
-    clAmdBlasOrder order,
-    clAmdBlasSide side,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transA,
-    clAmdBlasDiag diag,
-    size_t M,
-    size_t N,
-    DoubleComplex alpha,
-    const cl_mem A,
-    size_t offA,
-    size_t lda,
-    cl_mem B,
-    size_t offB,
-    size_t ldb,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasSsyrk(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transA,
-    size_t N,
-    size_t K,
-    cl_float alpha,
-    const cl_mem A,
-    size_t lda,
-    cl_float beta,
-    cl_mem C,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDsyrk(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transA,
-    size_t N,
-    size_t K,
-    cl_double alpha,
-    const cl_mem A,
-    size_t lda,
-    cl_double beta,
-    cl_mem C,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCsyrk(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transA,
-    size_t N,
-    size_t K,
-    FloatComplex alpha,
-    const cl_mem A,
-    size_t lda,
-    FloatComplex beta,
-    cl_mem C,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZsyrk(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transA,
-    size_t N,
-    size_t K,
-    DoubleComplex alpha,
-    const cl_mem A,
-    size_t lda,
-    DoubleComplex beta,
-    cl_mem C,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasSsyrkEx(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transA,
-    size_t N,
-    size_t K,
-    cl_float alpha,
-    const cl_mem A,
-    size_t offA,
-    size_t lda,
-    cl_float beta,
-    cl_mem C,
-    size_t offC,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDsyrkEx(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transA,
-    size_t N,
-    size_t K,
-    cl_double alpha,
-    const cl_mem A,
-    size_t offA,
-    size_t lda,
-    cl_double beta,
-    cl_mem C,
-    size_t offC,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCsyrkEx(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transA,
-    size_t N,
-    size_t K,
-    FloatComplex alpha,
-    const cl_mem A,
-    size_t offA,
-    size_t lda,
-    FloatComplex beta,
-    cl_mem C,
-    size_t offC,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZsyrkEx(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transA,
-    size_t N,
-    size_t K,
-    DoubleComplex alpha,
-    const cl_mem A,
-    size_t offA,
-    size_t lda,
-    DoubleComplex beta,
-    cl_mem C,
-    size_t offC,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasSsyr2k(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transAB,
-    size_t N,
-    size_t K,
-    cl_float alpha,
-    const cl_mem A,
-    size_t lda,
-    const cl_mem B,
-    size_t ldb,
-    cl_float beta,
-    cl_mem C,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDsyr2k(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transAB,
-    size_t N,
-    size_t K,
-    cl_double alpha,
-    const cl_mem A,
-    size_t lda,
-    const cl_mem B,
-    size_t ldb,
-    cl_double beta,
-    cl_mem C,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCsyr2k(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transAB,
-    size_t N,
-    size_t K,
-    FloatComplex alpha,
-    const cl_mem A,
-    size_t lda,
-    const cl_mem B,
-    size_t ldb,
-    FloatComplex beta,
-    cl_mem C,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZsyr2k(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transAB,
-    size_t N,
-    size_t K,
-    DoubleComplex alpha,
-    const cl_mem A,
-    size_t lda,
-    const cl_mem B,
-    size_t ldb,
-    DoubleComplex beta,
-    cl_mem C,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasSsyr2kEx(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transAB,
-    size_t N,
-    size_t K,
-    cl_float alpha,
-    const cl_mem A,
-    size_t offA,
-    size_t lda,
-    const cl_mem B,
-    size_t offB,
-    size_t ldb,
-    cl_float beta,
-    cl_mem C,
-    size_t offC,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDsyr2kEx(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transAB,
-    size_t N,
-    size_t K,
-    cl_double alpha,
-    const cl_mem A,
-    size_t offA,
-    size_t lda,
-    const cl_mem B,
-    size_t offB,
-    size_t ldb,
-    cl_double beta,
-    cl_mem C,
-    size_t offC,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCsyr2kEx(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transAB,
-    size_t N,
-    size_t K,
-    FloatComplex alpha,
-    const cl_mem A,
-    size_t offA,
-    size_t lda,
-    const cl_mem B,
-    size_t offB,
-    size_t ldb,
-    FloatComplex beta,
-    cl_mem C,
-    size_t offC,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZsyr2kEx(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transAB,
-    size_t N,
-    size_t K,
-    DoubleComplex alpha,
-    const cl_mem A,
-    size_t offA,
-    size_t lda,
-    const cl_mem B,
-    size_t offB,
-    size_t ldb,
-    DoubleComplex beta,
-    cl_mem C,
-    size_t offC,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasSsymm(
-    clAmdBlasOrder order,
-    clAmdBlasSide side,
-    clAmdBlasUplo uplo,
-    size_t M,
-    size_t N,
-    cl_float alpha,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    const cl_mem B,
-    size_t offb,
-    size_t ldb,
-    cl_float beta,
-    cl_mem C,
-    size_t offc,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasDsymm(
-    clAmdBlasOrder order,
-    clAmdBlasSide side,
-    clAmdBlasUplo uplo,
-    size_t M,
-    size_t N,
-    cl_double alpha,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    const cl_mem B,
-    size_t offb,
-    size_t ldb,
-    cl_double beta,
-    cl_mem C,
-    size_t offc,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCsymm(
-    clAmdBlasOrder order,
-    clAmdBlasSide side,
-    clAmdBlasUplo uplo,
-    size_t M,
-    size_t N,
-    cl_float2 alpha,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    const cl_mem B,
-    size_t offb,
-    size_t ldb,
-    cl_float2 beta,
-    cl_mem C,
-    size_t offc,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZsymm(
-    clAmdBlasOrder order,
-    clAmdBlasSide side,
-    clAmdBlasUplo uplo,
-    size_t M,
-    size_t N,
-    cl_double2 alpha,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    const cl_mem B,
-    size_t offb,
-    size_t ldb,
-    cl_double2 beta,
-    cl_mem C,
-    size_t offc,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasChemm(
-    clAmdBlasOrder order,
-    clAmdBlasSide side,
-    clAmdBlasUplo uplo,
-    size_t M,
-    size_t N,
-    cl_float2 alpha,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    const cl_mem B,
-    size_t offb,
-    size_t ldb,
-    cl_float2 beta,
-    cl_mem C,
-    size_t offc,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZhemm(
-    clAmdBlasOrder order,
-    clAmdBlasSide side,
-    clAmdBlasUplo uplo,
-    size_t M,
-    size_t N,
-    cl_double2 alpha,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    const cl_mem B,
-    size_t offb,
-    size_t ldb,
-    cl_double2 beta,
-    cl_mem C,
-    size_t offc,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCherk(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transA,
-    size_t N,
-    size_t K,
-    float alpha,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    float beta,
-    cl_mem C,
-    size_t offc,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZherk(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose transA,
-    size_t N,
-    size_t K,
-    double alpha,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    double beta,
-    cl_mem C,
-    size_t offc,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasCher2k(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose trans,
-    size_t N,
-    size_t K,
-    FloatComplex alpha,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    const cl_mem B,
-    size_t offb,
-    size_t ldb,
-    cl_float beta,
-    cl_mem C,
-    size_t offc,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
-
-clAmdBlasStatus
-__clAmdBlasZher2k(
-    clAmdBlasOrder order,
-    clAmdBlasUplo uplo,
-    clAmdBlasTranspose trans,
-    size_t N,
-    size_t K,
-    DoubleComplex alpha,
-    const cl_mem A,
-    size_t offa,
-    size_t lda,
-    const cl_mem B,
-    size_t offb,
-    size_t ldb,
-    cl_double beta,
-    cl_mem C,
-    size_t offc,
-    size_t ldc,
-    cl_uint numCommandQueues,
-    cl_command_queue *commandQueues,
-    cl_uint numEventsInWaitList,
-    const cl_event *eventWaitList,
-    cl_event *events);
+int cblas_errprn(int ierr, int info, char *form, ...);
+
+
+
+
+
+
+float cblas_sdsdot(const int N, const float alpha, const float *X,
+                    const int incX, const float *Y, const int incY);
+double cblas_dsdot(const int N, const float *X, const int incX, const float *Y,
+                   const int incY);
+float cblas_sdot(const int N, const float *X, const int incX,
+                  const float *Y, const int incY);
+double cblas_ddot(const int N, const double *X, const int incX,
+                  const double *Y, const int incY);
+
+
+
+void cblas_cdotu_sub(const int N, const void *X, const int incX,
+                       const void *Y, const int incY, void *dotu);
+void cblas_cdotc_sub(const int N, const void *X, const int incX,
+                       const void *Y, const int incY, void *dotc);
+
+void cblas_zdotu_sub(const int N, const void *X, const int incX,
+                       const void *Y, const int incY, void *dotu);
+void cblas_zdotc_sub(const int N, const void *X, const int incX,
+                       const void *Y, const int incY, void *dotc);
+
+
+
+
+
+float cblas_snrm2(const int N, const float *X, const int incX);
+float cblas_sasum(const int N, const float *X, const int incX);
+
+double cblas_dnrm2(const int N, const double *X, const int incX);
+double cblas_dasum(const int N, const double *X, const int incX);
+
+float cblas_scnrm2(const int N, const void *X, const int incX);
+float cblas_scasum(const int N, const void *X, const int incX);
+
+double cblas_dznrm2(const int N, const void *X, const int incX);
+double cblas_dzasum(const int N, const void *X, const int incX);
+
+
+
+
+
+size_t cblas_isamax(const int N, const float *X, const int incX);
+size_t cblas_idamax(const int N, const double *X, const int incX);
+size_t cblas_icamax(const int N, const void *X, const int incX);
+size_t cblas_izamax(const int N, const void *X, const int incX);
+
+
+
+
+
+
+
+void cblas_srotg(float a, float b, float c, float s);
+void cblas_crotg(complex a, complex b, complex c, float s);
+void cblas_drotg(double a, double b, double c, double s);
+void cblas_zrotg(doublecomplex a, doublecomplex b, doublecomplex c, double s);
+
+void cblas_sswap(const int N, float *X, const int incX,
+                 float *Y, const int incY);
+void cblas_scopy(const int N, const float *X, const int incX,
+                 float *Y, const int incY);
+void cblas_saxpy(const int N, const float alpha, const float *X,
+                 const int incX, float *Y, const int incY);
+
+void cblas_dswap(const int N, double *X, const int incX,
+                 double *Y, const int incY);
+void cblas_dcopy(const int N, const double *X, const int incX,
+                 double *Y, const int incY);
+void cblas_daxpy(const int N, const double alpha, const double *X,
+                 const int incX, double *Y, const int incY);
+
+void cblas_cswap(const int N, void *X, const int incX,
+                 void *Y, const int incY);
+void cblas_ccopy(const int N, const void *X, const int incX,
+                 void *Y, const int incY);
+void cblas_caxpy(const int N, const void *alpha, const void *X,
+                 const int incX, void *Y, const int incY);
+
+void cblas_zswap(const int N, void *X, const int incX,
+                 void *Y, const int incY);
+void cblas_zcopy(const int N, const void *X, const int incX,
+                 void *Y, const int incY);
+void cblas_zaxpy(const int N, const void *alpha, const void *X,
+                 const int incX, void *Y, const int incY);
+
+
+
+
+
+void cblas_srotmg(float *d1, float *d2, float *b1, const float b2, float *P);
+void cblas_srot(const int N, float *X, const int incX,
+                float *Y, const int incY, const float c, const float s);
+void cblas_srotm(const int N, float *X, const int incX,
+                float *Y, const int incY, const float *P);
+
+void cblas_drotmg(double *d1, double *d2, double *b1, const double b2, double *P);
+void cblas_drot(const int N, double *X, const int incX,
+                double *Y, const int incY, const double c, const double s);
+void cblas_drotm(const int N, double *X, const int incX,
+                double *Y, const int incY, const double *P);
+
+
+
+
+
+void cblas_sscal(const int N, const float alpha, float *X, const int incX);
+void cblas_dscal(const int N, const double alpha, double *X, const int incX);
+void cblas_cscal(const int N, const void *alpha, void *X, const int incX);
+void cblas_zscal(const int N, const void *alpha, void *X, const int incX);
+void cblas_csscal(const int N, const float alpha, void *X, const int incX);
+void cblas_zdscal(const int N, const double alpha, void *X, const int incX);
+
+void cblas_sgemv(const enum CBLAS_ORDER Order,
+                 const enum CBLAS_TRANSPOSE TransA, const int M, const int N,
+                 const float alpha, const float *A, const int lda,
+                 const float *X, const int incX, const float beta,
+                 float *Y, const int incY);
+void cblas_sgbmv(const enum CBLAS_ORDER Order,
+                 const enum CBLAS_TRANSPOSE TransA, const int M, const int N,
+                 const int KL, const int KU, const float alpha,
+                 const float *A, const int lda, const float *X,
+                 const int incX, const float beta, float *Y, const int incY);
+void cblas_strmv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_DIAG Diag,
+                 const int N, const float *A, const int lda,
+                 float *X, const int incX);
+void cblas_stbmv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_DIAG Diag,
+                 const int N, const int K, const float *A, const int lda,
+                 float *X, const int incX);
+void cblas_stpmv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_DIAG Diag,
+                 const int N, const float *Ap, float *X, const int incX);
+void cblas_strsv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_DIAG Diag,
+                 const int N, const float *A, const int lda, float *X,
+                 const int incX);
+void cblas_stbsv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_DIAG Diag,
+                 const int N, const int K, const float *A, const int lda,
+                 float *X, const int incX);
+void cblas_stpsv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_DIAG Diag,
+                 const int N, const float *Ap, float *X, const int incX);
+
+void cblas_dgemv(const enum CBLAS_ORDER Order,
+                 const enum CBLAS_TRANSPOSE TransA, const int M, const int N,
+                 const double alpha, const double *A, const int lda,
+                 const double *X, const int incX, const double beta,
+                 double *Y, const int incY);
+void cblas_dgbmv(const enum CBLAS_ORDER Order,
+                 const enum CBLAS_TRANSPOSE TransA, const int M, const int N,
+                 const int KL, const int KU, const double alpha,
+                 const double *A, const int lda, const double *X,
+                 const int incX, const double beta, double *Y, const int incY);
+void cblas_dtrmv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_DIAG Diag,
+                 const int N, const double *A, const int lda,
+                 double *X, const int incX);
+void cblas_dtbmv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_DIAG Diag,
+                 const int N, const int K, const double *A, const int lda,
+                 double *X, const int incX);
+void cblas_dtpmv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_DIAG Diag,
+                 const int N, const double *Ap, double *X, const int incX);
+void cblas_dtrsv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_DIAG Diag,
+                 const int N, const double *A, const int lda, double *X,
+                 const int incX);
+void cblas_dtbsv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_DIAG Diag,
+                 const int N, const int K, const double *A, const int lda,
+                 double *X, const int incX);
+void cblas_dtpsv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_DIAG Diag,
+                 const int N, const double *Ap, double *X, const int incX);
+
+void cblas_cgemv(const enum CBLAS_ORDER Order,
+                 const enum CBLAS_TRANSPOSE TransA, const int M, const int N,
+                 const void *alpha, const void *A, const int lda,
+                 const void *X, const int incX, const void *beta,
+                 void *Y, const int incY);
+void cblas_cgbmv(const enum CBLAS_ORDER Order,
+                 const enum CBLAS_TRANSPOSE TransA, const int M, const int N,
+                 const int KL, const int KU, const void *alpha,
+                 const void *A, const int lda, const void *X,
+                 const int incX, const void *beta, void *Y, const int incY);
+void cblas_ctrmv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_DIAG Diag,
+                 const int N, const void *A, const int lda,
+                 void *X, const int incX);
+void cblas_ctbmv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_DIAG Diag,
+                 const int N, const int K, const void *A, const int lda,
+                 void *X, const int incX);
+void cblas_ctpmv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_DIAG Diag,
+                 const int N, const void *Ap, void *X, const int incX);
+void cblas_ctrsv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_DIAG Diag,
+                 const int N, const void *A, const int lda, void *X,
+                 const int incX);
+void cblas_ctbsv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_DIAG Diag,
+                 const int N, const int K, const void *A, const int lda,
+                 void *X, const int incX);
+void cblas_ctpsv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_DIAG Diag,
+                 const int N, const void *Ap, void *X, const int incX);
+
+void cblas_zgemv(const enum CBLAS_ORDER Order,
+                 const enum CBLAS_TRANSPOSE TransA, const int M, const int N,
+                 const void *alpha, const void *A, const int lda,
+                 const void *X, const int incX, const void *beta,
+                 void *Y, const int incY);
+void cblas_zgbmv(const enum CBLAS_ORDER Order,
+                 const enum CBLAS_TRANSPOSE TransA, const int M, const int N,
+                 const int KL, const int KU, const void *alpha,
+                 const void *A, const int lda, const void *X,
+                 const int incX, const void *beta, void *Y, const int incY);
+void cblas_ztrmv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_DIAG Diag,
+                 const int N, const void *A, const int lda,
+                 void *X, const int incX);
+void cblas_ztbmv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_DIAG Diag,
+                 const int N, const int K, const void *A, const int lda,
+                 void *X, const int incX);
+void cblas_ztpmv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_DIAG Diag,
+                 const int N, const void *Ap, void *X, const int incX);
+void cblas_ztrsv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_DIAG Diag,
+                 const int N, const void *A, const int lda, void *X,
+                 const int incX);
+void cblas_ztbsv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_DIAG Diag,
+                 const int N, const int K, const void *A, const int lda,
+                 void *X, const int incX);
+void cblas_ztpsv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE TransA, const enum CBLAS_DIAG Diag,
+                 const int N, const void *Ap, void *X, const int incX);
+
+
+
+
+
+void cblas_ssymv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const int N, const float alpha, const float *A,
+                 const int lda, const float *X, const int incX,
+                 const float beta, float *Y, const int incY);
+void cblas_ssbmv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const int N, const int K, const float alpha, const float *A,
+                 const int lda, const float *X, const int incX,
+                 const float beta, float *Y, const int incY);
+void cblas_sspmv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const int N, const float alpha, const float *Ap,
+                 const float *X, const int incX,
+                 const float beta, float *Y, const int incY);
+void cblas_sger(const enum CBLAS_ORDER Order, const int M, const int N,
+                const float alpha, const float *X, const int incX,
+                const float *Y, const int incY, float *A, const int lda);
+void cblas_ssyr(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                const int N, const float alpha, const float *X,
+                const int incX, float *A, const int lda);
+void cblas_sspr(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                const int N, const float alpha, const float *X,
+                const int incX, float *Ap);
+void cblas_ssyr2(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                const int N, const float alpha, const float *X,
+                const int incX, const float *Y, const int incY, float *A,
+                const int lda);
+void cblas_sspr2(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                const int N, const float alpha, const float *X,
+                const int incX, const float *Y, const int incY, float *A);
+
+void cblas_dsymv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const int N, const double alpha, const double *A,
+                 const int lda, const double *X, const int incX,
+                 const double beta, double *Y, const int incY);
+void cblas_dsbmv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const int N, const int K, const double alpha, const double *A,
+                 const int lda, const double *X, const int incX,
+                 const double beta, double *Y, const int incY);
+void cblas_dspmv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const int N, const double alpha, const double *Ap,
+                 const double *X, const int incX,
+                 const double beta, double *Y, const int incY);
+void cblas_dger(const enum CBLAS_ORDER Order, const int M, const int N,
+                const double alpha, const double *X, const int incX,
+                const double *Y, const int incY, double *A, const int lda);
+void cblas_dsyr(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                const int N, const double alpha, const double *X,
+                const int incX, double *A, const int lda);
+void cblas_dspr(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                const int N, const double alpha, const double *X,
+                const int incX, double *Ap);
+void cblas_dsyr2(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                const int N, const double alpha, const double *X,
+                const int incX, const double *Y, const int incY, double *A,
+                const int lda);
+void cblas_dspr2(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                const int N, const double alpha, const double *X,
+                const int incX, const double *Y, const int incY, double *A);
+
+
+
+
+
+void cblas_chemv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const int N, const void *alpha, const void *A,
+                 const int lda, const void *X, const int incX,
+                 const void *beta, void *Y, const int incY);
+void cblas_chbmv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const int N, const int K, const void *alpha, const void *A,
+                 const int lda, const void *X, const int incX,
+                 const void *beta, void *Y, const int incY);
+void cblas_chpmv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const int N, const void *alpha, const void *Ap,
+                 const void *X, const int incX,
+                 const void *beta, void *Y, const int incY);
+void cblas_cgeru(const enum CBLAS_ORDER Order, const int M, const int N,
+                 const void *alpha, const void *X, const int incX,
+                 const void *Y, const int incY, void *A, const int lda);
+void cblas_cgerc(const enum CBLAS_ORDER Order, const int M, const int N,
+                 const void *alpha, const void *X, const int incX,
+                 const void *Y, const int incY, void *A, const int lda);
+void cblas_cher(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                const int N, const float alpha, const void *X, const int incX,
+                void *A, const int lda);
+void cblas_chpr(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                const int N, const float alpha, const void *X,
+                const int incX, void *A);
+void cblas_cher2(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N,
+                const void *alpha, const void *X, const int incX,
+                const void *Y, const int incY, void *A, const int lda);
+void cblas_chpr2(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N,
+                const void *alpha, const void *X, const int incX,
+                const void *Y, const int incY, void *Ap);
+
+void cblas_zhemv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const int N, const void *alpha, const void *A,
+                 const int lda, const void *X, const int incX,
+                 const void *beta, void *Y, const int incY);
+void cblas_zhbmv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const int N, const int K, const void *alpha, const void *A,
+                 const int lda, const void *X, const int incX,
+                 const void *beta, void *Y, const int incY);
+void cblas_zhpmv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const int N, const void *alpha, const void *Ap,
+                 const void *X, const int incX,
+                 const void *beta, void *Y, const int incY);
+void cblas_zgeru(const enum CBLAS_ORDER Order, const int M, const int N,
+                 const void *alpha, const void *X, const int incX,
+                 const void *Y, const int incY, void *A, const int lda);
+void cblas_zgerc(const enum CBLAS_ORDER Order, const int M, const int N,
+                 const void *alpha, const void *X, const int incX,
+                 const void *Y, const int incY, void *A, const int lda);
+void cblas_zher(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                const int N, const double alpha, const void *X, const int incX,
+                void *A, const int lda);
+void cblas_zhpr(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                const int N, const double alpha, const void *X,
+                const int incX, void *A);
+void cblas_zher2(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N,
+                const void *alpha, const void *X, const int incX,
+                const void *Y, const int incY, void *A, const int lda);
+void cblas_zhpr2(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo, const int N,
+                const void *alpha, const void *X, const int incX,
+                const void *Y, const int incY, void *Ap);
+void cblas_sgemm(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE TransA,
+                 const enum CBLAS_TRANSPOSE TransB, const int M, const int N,
+                 const int K, const float alpha, const float *A,
+                 const int lda, const float *B, const int ldb,
+                 const float beta, float *C, const int ldc);
+void cblas_ssymm(const enum CBLAS_ORDER Order, const enum CBLAS_SIDE Side,
+                 const enum CBLAS_UPLO Uplo, const int M, const int N,
+                 const float alpha, const float *A, const int lda,
+                 const float *B, const int ldb, const float beta,
+                 float *C, const int ldc);
+void cblas_ssyrk(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE Trans, const int N, const int K,
+                 const float alpha, const float *A, const int lda,
+                 const float beta, float *C, const int ldc);
+void cblas_ssyr2k(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                  const enum CBLAS_TRANSPOSE Trans, const int N, const int K,
+                  const float alpha, const float *A, const int lda,
+                  const float *B, const int ldb, const float beta,
+                  float *C, const int ldc);
+void cblas_strmm(const enum CBLAS_ORDER Order, const enum CBLAS_SIDE Side,
+                 const enum CBLAS_UPLO Uplo, const enum CBLAS_TRANSPOSE TransA,
+                 const enum CBLAS_DIAG Diag, const int M, const int N,
+                 const float alpha, const float *A, const int lda,
+                 float *B, const int ldb);
+void cblas_strsm(const enum CBLAS_ORDER Order, const enum CBLAS_SIDE Side,
+                 const enum CBLAS_UPLO Uplo, const enum CBLAS_TRANSPOSE TransA,
+                 const enum CBLAS_DIAG Diag, const int M, const int N,
+                 const float alpha, const float *A, const int lda,
+                 float *B, const int ldb);
+
+void cblas_dgemm(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE TransA,
+                 const enum CBLAS_TRANSPOSE TransB, const int M, const int N,
+                 const int K, const double alpha, const double *A,
+                 const int lda, const double *B, const int ldb,
+                 const double beta, double *C, const int ldc);
+void cblas_dsymm(const enum CBLAS_ORDER Order, const enum CBLAS_SIDE Side,
+                 const enum CBLAS_UPLO Uplo, const int M, const int N,
+                 const double alpha, const double *A, const int lda,
+                 const double *B, const int ldb, const double beta,
+                 double *C, const int ldc);
+void cblas_dsyrk(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE Trans, const int N, const int K,
+                 const double alpha, const double *A, const int lda,
+                 const double beta, double *C, const int ldc);
+void cblas_dsyr2k(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                  const enum CBLAS_TRANSPOSE Trans, const int N, const int K,
+                  const double alpha, const double *A, const int lda,
+                  const double *B, const int ldb, const double beta,
+                  double *C, const int ldc);
+void cblas_dtrmm(const enum CBLAS_ORDER Order, const enum CBLAS_SIDE Side,
+                 const enum CBLAS_UPLO Uplo, const enum CBLAS_TRANSPOSE TransA,
+                 const enum CBLAS_DIAG Diag, const int M, const int N,
+                 const double alpha, const double *A, const int lda,
+                 double *B, const int ldb);
+void cblas_dtrsm(const enum CBLAS_ORDER Order, const enum CBLAS_SIDE Side,
+                 const enum CBLAS_UPLO Uplo, const enum CBLAS_TRANSPOSE TransA,
+                 const enum CBLAS_DIAG Diag, const int M, const int N,
+                 const double alpha, const double *A, const int lda,
+                 double *B, const int ldb);
+
+void cblas_cgemm(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE TransA,
+                 const enum CBLAS_TRANSPOSE TransB, const int M, const int N,
+                 const int K, const void *alpha, const void *A,
+                 const int lda, const void *B, const int ldb,
+                 const void *beta, void *C, const int ldc);
+void cblas_csymm(const enum CBLAS_ORDER Order, const enum CBLAS_SIDE Side,
+                 const enum CBLAS_UPLO Uplo, const int M, const int N,
+                 const void *alpha, const void *A, const int lda,
+                 const void *B, const int ldb, const void *beta,
+                 void *C, const int ldc);
+void cblas_csyrk(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE Trans, const int N, const int K,
+                 const void *alpha, const void *A, const int lda,
+                 const void *beta, void *C, const int ldc);
+void cblas_csyr2k(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                  const enum CBLAS_TRANSPOSE Trans, const int N, const int K,
+                  const void *alpha, const void *A, const int lda,
+                  const void *B, const int ldb, const void *beta,
+                  void *C, const int ldc);
+void cblas_ctrmm(const enum CBLAS_ORDER Order, const enum CBLAS_SIDE Side,
+                 const enum CBLAS_UPLO Uplo, const enum CBLAS_TRANSPOSE TransA,
+                 const enum CBLAS_DIAG Diag, const int M, const int N,
+                 const void *alpha, const void *A, const int lda,
+                 void *B, const int ldb);
+void cblas_ctrsm(const enum CBLAS_ORDER Order, const enum CBLAS_SIDE Side,
+                 const enum CBLAS_UPLO Uplo, const enum CBLAS_TRANSPOSE TransA,
+                 const enum CBLAS_DIAG Diag, const int M, const int N,
+                 const void *alpha, const void *A, const int lda,
+                 void *B, const int ldb);
+
+void cblas_zgemm(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE TransA,
+                 const enum CBLAS_TRANSPOSE TransB, const int M, const int N,
+                 const int K, const void *alpha, const void *A,
+                 const int lda, const void *B, const int ldb,
+                 const void *beta, void *C, const int ldc);
+void cblas_zsymm(const enum CBLAS_ORDER Order, const enum CBLAS_SIDE Side,
+                 const enum CBLAS_UPLO Uplo, const int M, const int N,
+                 const void *alpha, const void *A, const int lda,
+                 const void *B, const int ldb, const void *beta,
+                 void *C, const int ldc);
+void cblas_zsyrk(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE Trans, const int N, const int K,
+                 const void *alpha, const void *A, const int lda,
+                 const void *beta, void *C, const int ldc);
+void cblas_zsyr2k(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                  const enum CBLAS_TRANSPOSE Trans, const int N, const int K,
+                  const void *alpha, const void *A, const int lda,
+                  const void *B, const int ldb, const void *beta,
+                  void *C, const int ldc);
+void cblas_ztrmm(const enum CBLAS_ORDER Order, const enum CBLAS_SIDE Side,
+                 const enum CBLAS_UPLO Uplo, const enum CBLAS_TRANSPOSE TransA,
+                 const enum CBLAS_DIAG Diag, const int M, const int N,
+                 const void *alpha, const void *A, const int lda,
+                 void *B, const int ldb);
+void cblas_ztrsm(const enum CBLAS_ORDER Order, const enum CBLAS_SIDE Side,
+                 const enum CBLAS_UPLO Uplo, const enum CBLAS_TRANSPOSE TransA,
+                 const enum CBLAS_DIAG Diag, const int M, const int N,
+                 const void *alpha, const void *A, const int lda,
+                 void *B, const int ldb);
+
+
+
+
+
+void cblas_chemm(const enum CBLAS_ORDER Order, const enum CBLAS_SIDE Side,
+                 const enum CBLAS_UPLO Uplo, const int M, const int N,
+                 const void *alpha, const void *A, const int lda,
+                 const void *B, const int ldb, const void *beta,
+                 void *C, const int ldc);
+void cblas_cherk(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE Trans, const int N, const int K,
+                 const float alpha, const void *A, const int lda,
+                 const float beta, void *C, const int ldc);
+void cblas_cher2k(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                  const enum CBLAS_TRANSPOSE Trans, const int N, const int K,
+                  const void *alpha, const void *A, const int lda,
+                  const void *B, const int ldb, const float beta,
+                  void *C, const int ldc);
+void cblas_zhemm(const enum CBLAS_ORDER Order, const enum CBLAS_SIDE Side,
+                 const enum CBLAS_UPLO Uplo, const int M, const int N,
+                 const void *alpha, const void *A, const int lda,
+                 const void *B, const int ldb, const void *beta,
+                 void *C, const int ldc);
+void cblas_zherk(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                 const enum CBLAS_TRANSPOSE Trans, const int N, const int K,
+                 const double alpha, const void *A, const int lda,
+                 const double beta, void *C, const int ldc);
+void cblas_zher2k(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
+                  const enum CBLAS_TRANSPOSE Trans, const int N, const int K,
+                  const void *alpha, const void *A, const int lda,
+                  const void *B, const int ldb, const double beta,
+                  void *C, const int ldc);
 
 
 #ifdef __cplusplus
