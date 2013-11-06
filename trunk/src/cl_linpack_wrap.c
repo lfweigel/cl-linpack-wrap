@@ -531,9 +531,81 @@ void cblas_sscal(const int N, const float alpha, float *X, const int incX)
 
 void cblas_dscal(const int N, const double alpha, double *X, const int incX)
 {
-    __NOT_IMPL__
     /* Init context if neccesary */
     ContextInit();
+
+    cl_mem bufX;
+    int lenX = 1 + (N-1)*abs(incX);
+
+#ifdef DOUBLE_AS_SINGLE
+
+    /* Create a single precision copy */
+    int i;
+
+    float *X_s = calloc(1, lenX * sizeof(float));
+
+    for (i = 0; i < lenX; ++i)
+        X_s[i] = (float)X[i];
+
+    /* Prepare OpenCL memory objects and place vectors inside them. */
+    bufX = clCreateBuffer(ctx, CL_MEM_READ_WRITE, (lenX * sizeof(float)),
+                          NULL, &err);
+
+    err = clEnqueueWriteBuffer(queue, bufX, CL_TRUE, 0,
+        (lenX * sizeof(float)), X_s, 0, NULL, NULL);
+
+    /* Call clAmdBlas function. */
+    err = clAmdBlasSscal( N, alpha, bufX, 0, incX, 1, &queue, 0, NULL, &event);
+
+    if (err != CL_SUCCESS) {
+        printf("clAmdBlasSscal() failed with %d\n", err);
+        ret = 1;
+    }
+    else {
+        /* Wait for calculations to be finished. */
+        err = clWaitForEvents(1, &event);
+
+        /* Fetch results of calculations from GPU memory. */
+        err = clEnqueueReadBuffer(queue, bufX, CL_TRUE, 0, (lenX * sizeof(float)),
+                                  X_s, 0, NULL, NULL);
+    }   
+
+    /* Refresh double precision vector Y */
+    for (i = 0; i < lenX; ++i)
+        X[i] = (double)X_s[i];
+
+    /* Free single precision copy */
+    free(X_s);
+
+#else
+
+    /* Prepare OpenCL memory objects and place vectors inside them. */
+    bufX = clCreateBuffer(ctx, CL_MEM_READ_WRITE, ( lenX * sizeof(double)),
+                          NULL, &err);
+
+    err = clEnqueueWriteBuffer(queue, bufX, CL_TRUE, 0,
+        ( lenX * sizeof(double)), X, 0, NULL, NULL);
+
+    /* Call clAmdBlas function. */
+    err = clAmdBlasDscal( N, alpha, bufX, 0, incX, 1, &queue, 0, NULL, &event);
+
+    if (err != CL_SUCCESS) {
+        printf("clAmdBlasDscal() failed with %d\n", err);
+        ret = 1;
+    }
+    else {
+        /* Wait for calculations to be finished. */
+        err = clWaitForEvents(1, &event);
+
+        /* Fetch results of calculations from GPU memory. */
+        err = clEnqueueReadBuffer(queue, bufX, CL_TRUE, 0, (lenX * sizeof(double)),
+                                  X, 0, NULL, NULL);
+    }
+
+#endif
+
+    /* Release OpenCL memory objects. */
+    clReleaseMemObject(bufX);
 }
 
 void cblas_cscal(const int N, const void *alpha, void *X, const int incX)
