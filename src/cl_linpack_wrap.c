@@ -732,8 +732,8 @@ void cblas_dgemv(const enum CBLAS_ORDER Order,
         M * sizeof(*Y), Y, 0, NULL, NULL);
 
     /* Call clAmdBlas function. */
-    err = clAmdBlasSgemv(order, transA, M, N, alpha, bufA, lda, bufX, 0, incx,
-        beta, bufY, 0, incy, 1, &queue, 0, NULL, &event);
+    err = clAmdBlasSgemv(order, transA, M, N, alpha, bufA, lda, bufX, 0, incX,
+        beta, bufY, 0, incY, 1, &queue, 0, NULL, &event);
     if (err != CL_SUCCESS) {
         printf("clAmdBlasSgemv() failed with %d\n", err);
         ret = 1;
@@ -753,8 +753,6 @@ void cblas_dgemv(const enum CBLAS_ORDER Order,
     clReleaseMemObject(bufY);
     clReleaseMemObject(bufX);
     clReleaseMemObject(bufA);
-
-
 }
                  
 void cblas_dgbmv(const enum CBLAS_ORDER Order,
@@ -1104,9 +1102,106 @@ void cblas_dger(const enum CBLAS_ORDER Order, const int M, const int N,
                 const double alpha, const double *X, const int incX,
                 const double *Y, const int incY, double *A, const int lda)
 {
-    __NOT_IMPL__
     /* Init context if neccesary */
     ContextInit();
+
+    cl_mem bufA, bufX, bufY;
+
+    enum clAmdBlasOrder order = Order - 101;
+
+#ifdef DOUBLE_AS_SINGLE
+
+    /* Create a single precision copy */
+    int i;
+
+    float *A_s = calloc(1, M * lda * sizeof(float));
+    float *X_s = calloc(1, M * sizeof(float));
+    float *Y_s = calloc(1, N * sizeof(float));
+
+    for (i = 0; i < M; ++i)
+        X_s[i] = (float)X[i];
+    for (i = 0; i < N; ++i)
+        Y_s[i] = (float)Y[i];
+
+    /* Prepare OpenCL memory objects and place matrices inside them. */
+    bufA = clCreateBuffer(ctx, CL_MEM_READ_WRITE, M * lda * sizeof(float),
+                          NULL, &err);
+    bufX = clCreateBuffer(ctx, CL_MEM_READ_ONLY, ( 1 + ( M - 1 )*abs( incX ) ) * sizeof(float),
+                          NULL, &err);
+    bufY = clCreateBuffer(ctx, CL_MEM_READ_ONLY, ( 1 + ( N - 1 )*abs( incY ) ) * sizeof(float),
+                          NULL, &err);
+
+    err = clEnqueueWriteBuffer(queue, bufA, CL_TRUE, 0,
+        M * lda * sizeof(float), A_s, 0, NULL, NULL);
+    err = clEnqueueWriteBuffer(queue, bufX, CL_TRUE, 0,
+        ( 1 + ( M - 1 )*abs( incX ) ) * sizeof(float), X_s, 0, NULL, NULL);
+    err = clEnqueueWriteBuffer(queue, bufY, CL_TRUE, 0,
+        ( 1 + ( N - 1 )*abs( incY ) ) * sizeof(float), Y_s, 0, NULL, NULL);
+
+    /* Call clAmdBlas function. */
+    err = clAmdBlasSger(order, M, N, alpha, bufX, 0, incX, bufY, 0, incY, 
+        bufA, 0, lda, 1, &queue, 0, NULL, &event);
+    if (err != CL_SUCCESS) {
+        printf("clAmdBlasSger() failed with %d\n", err);
+        ret = 1;
+    }
+    else {
+        /* Wait for calculations to be finished. */
+        err = clWaitForEvents(1, &event);
+
+        /* Fetch results of calculations from GPU memory. */
+        err = clEnqueueReadBuffer(queue, bufA, CL_TRUE, 0, (M * lda * sizeof(float)),
+                                  A_s, 0, NULL, NULL);
+    }
+
+    /* Refresh double precision vector Y */
+    for (i = 0; i < M * N; ++i)
+        A[i] = (double)A_s[i];
+
+    /* Free single precision copy */
+    free(A_s);
+    free(X_s);
+    free(Y_s);
+
+#else
+
+    /* Prepare OpenCL memory objects and place matrices inside them. */
+    bufA = clCreateBuffer(ctx, CL_MEM_READ_WRITE, M * lda * sizeof(double),
+                          NULL, &err);
+    bufX = clCreateBuffer(ctx, CL_MEM_READ_ONLY, ( 1 + ( M - 1 )*abs( incX ) ) * sizeof(double),
+                          NULL, &err);
+    bufY = clCreateBuffer(ctx, CL_MEM_READ_ONLY, ( 1 + ( N - 1 )*abs( incY ) ) * sizeof(double),
+                          NULL, &err);
+
+    err = clEnqueueWriteBuffer(queue, bufA, CL_TRUE, 0,
+        M * lda * sizeof(double), A, 0, NULL, NULL);
+    err = clEnqueueWriteBuffer(queue, bufX, CL_TRUE, 0,
+        ( 1 + ( M - 1 )*abs( incX ) ) * sizeof(double), X, 0, NULL, NULL);
+    err = clEnqueueWriteBuffer(queue, bufY, CL_TRUE, 0,
+        ( 1 + ( N - 1 )*abs( incY ) ) * sizeof(double), Y, 0, NULL, NULL);
+
+    /* Call clAmdBlas function. */
+    err = clAmdBlasDger(order, M, N, alpha, bufX, 0, incX, bufY, 0, incY, 
+        bufA, 0, lda, 1, &queue, 0, NULL, &event);
+    if (err != CL_SUCCESS) {
+        printf("clAmdBlasDger() failed with %d\n", err);
+        ret = 1;
+    }
+    else {
+        /* Wait for calculations to be finished. */
+        err = clWaitForEvents(1, &event);
+
+        /* Fetch results of calculations from GPU memory. */
+        err = clEnqueueReadBuffer(queue, bufA, CL_TRUE, 0, (M * lda * sizeof(double)),
+                                  A, 0, NULL, NULL);
+    }
+
+#endif
+
+    /* Release OpenCL memory objects. */
+    clReleaseMemObject(bufY);
+    clReleaseMemObject(bufX);
+    clReleaseMemObject(bufA);
 }
                 
 void cblas_dsyr(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
