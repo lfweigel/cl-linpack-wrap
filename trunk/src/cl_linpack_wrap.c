@@ -324,9 +324,67 @@ void cblas_saxpy(const int N, const float alpha, const float *X,
 void cblas_dswap(const int N, double *X, const int incX,
                  double *Y, const int incY)
 {
-    __NOT_IMPL__
     /* Init context if neccesary */
     ContextInit();
+
+    cl_mem bufX, bufY;
+    int lenX = 1 + (N-1)*abs(incX);
+    int lenY = 1 + (N-1)*abs(incY);
+
+#ifdef DOUBLE_AS_SINGLE
+
+    int i;
+
+    float *X_s = calloc(1, lenX * sizeof(float));
+    float *Y_s = calloc(1, lenY * sizeof(float));
+
+    for (i = 0; i < lenX; ++i)
+        X_s[i] = (float)X[i];
+    for (i = 0; i < lenY; ++i)
+        Y_s[i] = (float)Y[i];
+
+#else
+
+    /* Prepare OpenCL memory objects and place vectors inside them. */
+    bufX = clCreateBuffer(ctx, CL_MEM_READ_WRITE, (lenX*sizeof(float)), NULL, &err);
+    bufY = clCreateBuffer(ctx, CL_MEM_READ_WRITE, (lenY*sizeof(float)), NULL, &err);
+
+    err = clEnqueueWriteBuffer(queue, bufX, CL_TRUE, 0, (lenX*sizeof(float)), X_s, 0, NULL, NULL);
+    err = clEnqueueWriteBuffer(queue, bufY, CL_TRUE, 0, (lenY*sizeof(float)), Y_s, 0, NULL, NULL);
+
+    /* Call clAmdBlas function. */
+    err = clAmdBlasDswap( N, bufX, 0, incx, bufY, 0, incy, 1, &queue, 0, NULL, &event); 
+    if (err != CL_SUCCESS) {
+        printf("clAmdBlasDswap() failed with %d\n", err);
+        ret = 1;
+    }
+    else {
+        /* Wait for calculations to be finished. */
+        err = clWaitForEvents(1, &event);
+
+        /* Fetch results of calculations from GPU memory. */
+        err = clEnqueueReadBuffer(queue, bufX, CL_TRUE, 0, (lenX*sizeof(double)),
+                                    X_s, 0, NULL, NULL);
+        err = clEnqueueReadBuffer(queue, bufY, CL_TRUE, 0, (lenY*sizeof(double)),
+                                    Y_s, 0, NULL, NULL);
+    }
+
+    /* Refresh double precision */
+    for (i = 0; i < lenX; ++i)
+        X[i] = X_s[i];
+    for (i = 0; i < lenY; ++i)
+        Y[i] = Y_s[i];
+
+    /* Free single precision */
+    free(X_s);
+    free(Y_s);
+
+#endif
+
+    /* Release OpenCL memory objects. */
+    clReleaseMemObject(bufY);
+    clReleaseMemObject(bufX);
+
 }
                  
 void cblas_dcopy(const int N, const double *X, const int incX,
