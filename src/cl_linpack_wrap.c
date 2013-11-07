@@ -242,9 +242,94 @@ size_t cblas_isamax(const int N, const float *X, const int incX)
 
 size_t cblas_idamax(const int N, const double *X, const int incX)
 {
-    __NOT_IMPL__
     /* Init context if neccesary */
     ContextInit();
+
+    cl_mem bufX, scratchBuf, iMax;
+    static cl_uint indexMax;
+
+    int lenX = 1 + (N-1)*abs(incX);
+    int lenScratchBuf = N;
+
+#ifdef DOUBLE_AS_SINGLE
+
+    int i;
+
+    float *X_s = calloc(1, lenX * sizeof(float));
+
+    for (i = 0; i < lenX; ++i)
+        X_s[i] = (float)X[i];
+
+    /* Prepare OpenCL memory objects and place matrices inside them. */
+    bufX = clCreateBuffer(ctx, CL_MEM_READ_ONLY, (lenX*sizeof(float)), NULL, &err);
+
+    // Allocate minimum of (N/64) elements. But here allocating N elements for the sake of simplicity
+    scratchBuf = clCreateBuffer(ctx, CL_MEM_READ_WRITE, (lenScratchBuf*sizeof(float) * 2), NULL, &err);
+
+    // Buffer to return the index of max absolute value in X
+    iMax = clCreateBuffer(ctx, CL_MEM_WRITE_ONLY, sizeof(cl_uint), NULL, &err);
+
+    err = clEnqueueWriteBuffer(queue, bufX, CL_TRUE, 0, (lenX*sizeof(float)) , X_s, 0, NULL, NULL);
+
+    /* Call clAmdBlas function. */
+    err = clAmdBlasiSamax( N, iMax, 0, bufX, 0, incX, scratchBuf,
+                                    1, &queue, 0, NULL, &event); 
+    if (err != CL_SUCCESS) {
+        printf("clAmdBlasiSamax() failed with %d\n", err);
+        ret = 1;
+    }
+    else {
+        /* Wait for calculations to be finished. */
+        err = clWaitForEvents(1, &event);
+
+        /* Fetch results of calculations from GPU memory. */
+        err = clEnqueueReadBuffer(queue, iMax, CL_TRUE, 0, sizeof(cl_uint),
+                                    &indexMax, 0, NULL, NULL);
+        printf("Result amax: %d\n", indexMax);
+    }
+
+    /* Free */
+    free(X_s);
+
+#else
+
+    /* Prepare OpenCL memory objects and place matrices inside them. */
+    bufX = clCreateBuffer(ctx, CL_MEM_READ_ONLY, (lenX*sizeof(double)), NULL, &err);
+
+    // Allocate minimum of (N/64) elements. But here allocating N elements for the sake of simplicity
+    scratchBuf = clCreateBuffer(ctx, CL_MEM_READ_WRITE, (lenScratchBuf*sizeof(double) * 2), NULL, &err);
+
+    // Buffer to return the index of max absolute value in X
+    iMax = clCreateBuffer(ctx, CL_MEM_WRITE_ONLY, sizeof(cl_uint), NULL, &err);
+
+    err = clEnqueueWriteBuffer(queue, bufX, CL_TRUE, 0, (lenX*sizeof(double)) , X, 0, NULL, NULL);
+
+    /* Call clAmdBlas function. */
+    err = clAmdBlasiDamax( N, iMax, 0, bufX, 0, incx, scratchBuf,
+                                    1, &queue, 0, NULL, &event); 
+    if (err != CL_SUCCESS) {
+        printf("clAmdBlasiDamax() failed with %d\n", err);
+        ret = 1;
+    }
+    else {
+        /* Wait for calculations to be finished. */
+        err = clWaitForEvents(1, &event);
+
+        /* Fetch results of calculations from GPU memory. */
+        err = clEnqueueReadBuffer(queue, iMax, CL_TRUE, 0, sizeof(cl_uint),
+                                    &indexMax, 0, NULL, NULL);
+        printf("Result amax: %d\n", indexMax);
+    }
+
+#endif
+
+    /* Release OpenCL memory objects. */
+    clReleaseMemObject(bufX);
+    clReleaseMemObject(scratchBuf);
+    clReleaseMemObject(iMax);
+
+    /* Return */
+    return indexMax;
 }
 
 size_t cblas_icamax(const int N, const void *X, const int incX)
