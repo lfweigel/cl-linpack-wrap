@@ -13,6 +13,78 @@ ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 LT_INIT
 AC_PROG_LIBTOOL
 
+###############
+# Debug/Profile
+###############
+
+debug=false
+CFLAGS="-msse2 -O3 -std=gnu99 -DNDEBUG"
+CXXFLAGS="-std=gnu++0x -O3 -DNDEBUG"
+AC_ARG_ENABLE(debug,
+[  --enable-debug    Turn on debugging],
+[
+	case "${enableval}" in
+	yes)
+		debug=true
+		
+		# Add flag '-Wno-error=deprecated-declarations' only if it is supported.
+		# This flag prevents warnings caused by newer GTK versions that would cause with -Werror
+		CXXFLAGS="-msse2 -std=gnu++0x -Wall -Werror -g -O0"
+		saved_flags="-msse2 -Wall -Werror -DMHANDLE -g -O0 -std=gnu99"
+		CFLAGS="-Wno-error=deprecated-declarations"
+		AC_MSG_CHECKING([whether CC supports -Wno-error=deprecated-declarations])
+		AC_COMPILE_IFELSE([AC_LANG_PROGRAM([])],
+				[ AC_MSG_RESULT([yes]) ]
+				[ saved_flags="$saved_flags -Wno-error=deprecated-declarations" ],
+				[ AC_MSG_RESULT([no]) ]
+			)
+		CFLAGS="$saved_flags"
+		;;
+	no)
+		;;
+	*)
+		AC_MSG_ERROR(bad value ${enableval} for --enable-debug)
+		;;
+	esac
+],
+[])
+
+profile=false
+AC_ARG_ENABLE(profile,
+[  --enable-profile    Turn on profiling],
+[
+	case "${enableval}" in
+	yes)
+		CFLAGS+=" -pg"
+		profile=true
+		;;
+	no)
+		;;
+	*)
+		AC_MSG_ERROR(bad value ${enableval} for --enable-profile)
+		;;
+	esac
+],
+[])
+
+AC_ARG_ENABLE(no-strict-aliasing,
+[  --enable-no-strict-aliasing    Allow for no strict aliasing],
+[
+	case "${enableval}" in
+	yes)
+		CFLAGS+=" -fno-strict-aliasing"
+		;;
+	no)
+		;;
+	*)
+		AC_MSG_ERROR(bad value ${enableval} for --enable-no-strict-aliasing)
+		;;
+	esac
+],
+[])
+AC_SUBST([CFLAGS])
+
+
 ##################
 # Test AMD OpenCL
 ##################

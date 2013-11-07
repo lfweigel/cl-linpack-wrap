@@ -26,6 +26,9 @@ enum CBLAS_DIAG {CblasNonUnit=131, CblasUnit=132};
 enum CBLAS_SIDE {CblasLeft=141, CblasRight=142};
 
 /* Functions */
+
+void ContextDestroy();
+
 int cblas_errprn(int ierr, int info, char *form, ...);
 
 
