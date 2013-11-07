@@ -1825,9 +1825,102 @@ void cblas_dtrsm(const enum CBLAS_ORDER Order, const enum CBLAS_SIDE Side,
                  const double alpha, const double *A, const int lda,
                  double *B, const int ldb)
 {
-    __NOT_IMPL__
     /* Init context if neccesary */
     ContextInit();
+
+    cl_mem bufA, bufB;
+
+    enum clAmdBlasOrder order = Order - 101;
+    enum clAmdBlasSide side = Side - 141;
+    enum clAmdBlasUplo uploA = Uplo - 121;
+    enum clAmdBlasTranspose transA = TransA - 111;
+    enum clAmdBlasDiag diagA = Diag - 131;
+
+#ifdef DOUBLE_AS_SINGLE
+
+    int i;
+
+    float *A_s = calloc(1, M * N * sizeof(float));
+    float *B_s = calloc(1, M * N * sizeof(float));
+
+    for (i = 0; i < M * N; ++i)
+        A_s[i] = (float)A[i];
+    for (i = 0; i < M * N; ++i)
+        B_s[i] = (float)B[i];
+
+    /* Prepare OpenCL memory objects and place matrices inside them. */
+    bufA = clCreateBuffer(ctx, CL_MEM_READ_ONLY, M * M * sizeof(float),
+                          NULL, &err);
+    bufB = clCreateBuffer(ctx, CL_MEM_READ_WRITE, M * N * sizeof(float),
+                          NULL, &err);
+
+    err = clEnqueueWriteBuffer(queue, bufA, CL_TRUE, 0,
+        M * M * sizeof(float), A_s, 0, NULL, NULL);
+    err = clEnqueueWriteBuffer(queue, bufB, CL_TRUE, 0,
+        M * N * sizeof(float), B_s, 0, NULL, NULL);
+
+    /* Call clAmdBlas function. */
+    err = clAmdBlasStrsm(order, side, uploA, transA, diagA, M, N,
+                         (float)alpha, bufA, lda, bufB, ldb, 1, &queue, 0,
+                         NULL, &event);
+    if (err != CL_SUCCESS) {
+        printf("clAmdBlasStrsm() failed with %d\n", err);
+        ret = 1;
+    }
+    else {
+        /* Wait for calculations to be finished. */
+        err = clWaitForEvents(1, &event);
+    }
+
+
+    /* Refresh the matrix B_s */
+    err = clEnqueueWriteBuffer(queue, bufB, CL_TRUE, 0,
+        M * N * sizeof(float), B_s, 0, NULL, NULL);
+
+    /* Refresh the matrix B */
+    for (i = 0; i < M * N; ++i)
+        B[i] = (double)B_s[i];
+
+    /* Free */
+    free(A_s);
+    free(B_s);
+
+#else
+
+    /* Prepare OpenCL memory objects and place matrices inside them. */
+    bufA = clCreateBuffer(ctx, CL_MEM_READ_ONLY, M * M * sizeof(double),
+                          NULL, &err);
+    bufB = clCreateBuffer(ctx, CL_MEM_READ_WRITE, M * N * sizeof(double),
+                          NULL, &err);
+
+    err = clEnqueueWriteBuffer(queue, bufA, CL_TRUE, 0,
+        M * M * sizeof(double), A, 0, NULL, NULL);
+    err = clEnqueueWriteBuffer(queue, bufB, CL_TRUE, 0,
+        M * N * sizeof(double), B, 0, NULL, NULL);
+
+    /* Call clAmdBlas function. */
+    err = clAmdBlasDtrsm(order, side, uploA, transA, diagA, M, N,
+                         alpha, bufA, lda, bufB, ldb, 1, &queue, 0,
+                         NULL, &event);
+    if (err != CL_SUCCESS) {
+        printf("clAmdBlasDtrsm() failed with %d\n", err);
+        ret = 1;
+    }
+    else {
+        /* Wait for calculations to be finished. */
+        err = clWaitForEvents(1, &event);
+    }
+
+
+    /* Refresh the matrix B */
+    err = clEnqueueWriteBuffer(queue, bufB, CL_TRUE, 0,
+        M * N * sizeof(double), B, 0, NULL, NULL);
+
+#endif
+
+    /* Release OpenCL memory objects. */
+    clReleaseMemObject(bufB);
+    clReleaseMemObject(bufA);
 }
                  
 
