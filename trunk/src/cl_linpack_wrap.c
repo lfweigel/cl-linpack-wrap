@@ -930,9 +930,99 @@ void cblas_dtrsv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
                  const int N, const double *A, const int lda, double *X,
                  const int incX)
 {
-    __NOT_IMPL__
     /* Init context if neccesary */
     ContextInit();
+
+    cl_mem bufA, bufX;
+
+    enum clAmdBlasOrder order = Order - 101;
+    enum clAmdBlasUplo uploA = Uplo - 121;
+    enum clAmdBlasTranspose transA = TransA - 111;
+    enum clAmdBlasDiag diagA = Diag - 131;
+
+#ifdef DOUBLE_AS_SINGLE
+
+    int i;
+
+    float *A_s = calloc(1, N * N * sizeof(float));
+    float *X_s = calloc(1, N * sizeof(float));
+
+    for (i = 0; i < N * N; ++i)
+        A_s[i] = (float)A[i];
+    for (i = 0; i < N; ++i)
+        X_s[i] = (float)X[i];
+
+    /* Prepare OpenCL memory objects and place matrices inside them. */
+    bufA = clCreateBuffer(ctx, CL_MEM_READ_ONLY, N * N * sizeof(float),
+                          NULL, &err);
+    bufX = clCreateBuffer(ctx, CL_MEM_READ_WRITE, N * sizeof(float),
+                          NULL, &err);
+
+    err = clEnqueueWriteBuffer(queue, bufA, CL_TRUE, 0,
+                    N * N * sizeof(float), A_s, 0, NULL, NULL);
+    err = clEnqueueWriteBuffer(queue, bufX, CL_TRUE, 0,
+                    N * sizeof(float), X_s, 0, NULL, NULL);
+
+    /* Call clAmdBlas function. */
+    err = clAmdBlasStrsv(order, uploA, transA, diagA, N,
+                         bufA, 0, lda, bufX, 0, incX, 1, &queue, 0, NULL, &event);
+                         
+    if (err != CL_SUCCESS) {
+        printf("clAmdBlasStrsv() failed with %d\n", err);
+        ret = 1;
+    }
+    else {
+        /* Wait for calculations to be finished. */
+        err = clWaitForEvents(1, &event);
+
+        /* Fetch results of calculations from GPU memory. */
+        err = clEnqueueReadBuffer(queue, bufX, CL_TRUE, 0, N * sizeof(float),
+                                  X_s, 0, NULL, NULL);
+        }
+
+    /* Refresh double precison */
+    for (i = 0; i < N; ++i)
+        X[i] = (double)X_s[i];    
+
+    /* Free */
+    free(A_s);
+    free(X_s);
+
+#else
+
+    /* Prepare OpenCL memory objects and place matrices inside them. */
+    bufA = clCreateBuffer(ctx, CL_MEM_READ_ONLY, N * N * sizeof(double),
+                          NULL, &err);
+    bufX = clCreateBuffer(ctx, CL_MEM_READ_WRITE, N * sizeof(double),
+                          NULL, &err);
+
+    err = clEnqueueWriteBuffer(queue, bufA, CL_TRUE, 0,
+                    N * N * sizeof(double), A, 0, NULL, NULL);
+    err = clEnqueueWriteBuffer(queue, bufX, CL_TRUE, 0,
+                    N * sizeof(double), X, 0, NULL, NULL);
+
+    /* Call clAmdBlas function. */
+    err = clAmdBlasDtrsv(order, uploA, transA, diagA, N,
+                         bufA, 0, lda, bufX, 0, incx, 1, &queue, 0, NULL, &event);
+                         
+    if (err != CL_SUCCESS) {
+        printf("clAmdBlasDtrsv() failed with %d\n", err);
+        ret = 1;
+    }
+    else {
+        /* Wait for calculations to be finished. */
+        err = clWaitForEvents(1, &event);
+
+        /* Fetch results of calculations from GPU memory. */
+        err = clEnqueueReadBuffer(queue, bufX, CL_TRUE, 0, N * sizeof(double),
+                                  X, 0, NULL, NULL);
+        }
+
+#endif
+
+    /* Release OpenCL memory objects. */
+    clReleaseMemObject(bufX);
+    clReleaseMemObject(bufA);
 }
                  
 void cblas_dtbsv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
