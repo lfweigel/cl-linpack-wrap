@@ -7,10 +7,10 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "cl_linpack_wrap.h"
 
 /* Global variables */
-
 
 char *clblas_error_not_impl = 
     "\tThis error message is reported by the clAMDBlas wrapper library\n"
@@ -29,6 +29,7 @@ int ret = 0;
 int context_initialized = 0;
 
 /* Private functions */
+
 static int ContextInit()
 {
     if (context_initialized)
@@ -2018,12 +2019,10 @@ void cblas_dgemm(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE TransA
     float *C_s = calloc(1, M * N * sizeof(float));
 
     for (i = 0; i < M * K; ++i)
-    {
         A_s[i] = (float)A[i];
-        printf("%f <- %f\n",A_s[i], A[i]);
-    }
     for (i = 0; i < K * N; ++i)
         B_s[i] = (float)B[i];
+    
 
     /* Prepare OpenCL memory objects and place matrices inside them. */
     bufA = clCreateBuffer(ctx, CL_MEM_READ_ONLY, M * K * sizeof(float*),
@@ -2055,15 +2054,12 @@ void cblas_dgemm(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE TransA
     }
     
     /* refresh single precision matrix C */
-    err = clEnqueueWriteBuffer(queue, bufC, CL_TRUE, 0,
+    err = clEnqueueReadBuffer(queue, bufC, CL_TRUE, 0,
         M * N * sizeof(float), C_s, 0, NULL, NULL);
 
     /* And refresh double precision matrix C */
     for (i = 0; i < M * N; ++i)
-    {
         C[i] = (double)C_s[i];
-        printf("%f <- %f\n", C[i], C_s[i]);        
-    }
 
     /* Free single precision copy */
     free(A_s);
