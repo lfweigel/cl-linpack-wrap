@@ -475,9 +475,84 @@ void cblas_dswap(const int N, double *X, const int incX,
 void cblas_dcopy(const int N, const double *X, const int incX,
                  double *Y, const int incY)
 {
-    __NOT_IMPL__
     /* Init context if neccesary */
     ContextInit();
+
+    cl_mem bufX, bufY;
+
+    int lenX = 1 + (N-1)*abs(incX);
+    int lenY = 1 + (N-1)*abs(incY);
+
+#ifdef DOUBLE_AS_SINGLE
+
+    int i;
+
+    float *X_s = calloc(1, lenX * sizeof(float));
+    float *Y_s = calloc(1, lenY * sizeof(float));
+
+    for (i = 0; i < lenX; ++i)
+        X_s[i] = (float)X[i];
+
+    /* Prepare OpenCL memory objects and place matrices inside them. */
+    bufX = clCreateBuffer(ctx, CL_MEM_READ_ONLY, (lenX*sizeof(float)), NULL, &err);
+    bufY = clCreateBuffer(ctx, CL_MEM_READ_WRITE, (lenY*sizeof(float)), NULL, &err);
+
+    err = clEnqueueWriteBuffer(queue, bufX, CL_TRUE, 0, (lenX*sizeof(float)), X_s, 0, NULL, NULL);
+    err = clEnqueueWriteBuffer(queue, bufY, CL_TRUE, 0, (lenY*sizeof(float)), Y_s, 0, NULL, NULL);
+
+    /* Call clAmdBlas function. */
+    err = clAmdBlasScopy( N, bufX, 0, incX, bufY, 0, incY, 1, &queue, 0, NULL, &event); 
+    if (err != CL_SUCCESS) {
+        printf("clAmdBlasScopy() failed with %d\n", err);
+        ret = 1;
+    }
+    else {
+        /* Wait for calculations to be finished. */
+        err = clWaitForEvents(1, &event);
+
+        err = clEnqueueReadBuffer(queue, bufY, CL_TRUE, 0, (lenY*sizeof(float)),
+                                    Y_s, 0, NULL, NULL);
+    }
+
+    /* Refresh double precision Y */
+     for (i = 0; i < lenY; ++i)
+        Y[i] = (double)Y_s[i];
+
+    /* Free */
+    free(X_s);
+    free(Y_s);
+
+#else
+
+    /* Prepare OpenCL memory objects and place matrices inside them. */
+    bufX = clCreateBuffer(ctx, CL_MEM_READ_ONLY, (lenX*sizeof(double)), NULL, &err);
+    bufY = clCreateBuffer(ctx, CL_MEM_READ_WRITE, (lenY*sizeof(double)), NULL, &err);
+
+    err = clEnqueueWriteBuffer(queue, bufX, CL_TRUE, 0, (lenX*sizeof(double)), X, 0, NULL, NULL);
+    err = clEnqueueWriteBuffer(queue, bufY, CL_TRUE, 0, (lenY*sizeof(double)), Y, 0, NULL, NULL);
+
+    /* Call clAmdBlas function. */
+    err = clAmdBlasDcopy( N, bufX, 0, incX, bufY, 0, incY, 1, &queue, 0, NULL, &event); 
+    if (err != CL_SUCCESS) {
+        printf("clAmdBlasDcopy() failed with %d\n", err);
+        ret = 1;
+    }
+    else {
+        /* Wait for calculations to be finished. */
+        err = clWaitForEvents(1, &event);
+
+        /* Fetch results of calculations from GPU memory. */
+        err = clEnqueueReadBuffer(queue, bufX, CL_TRUE, 0, (lenX*sizeof(double)),
+                                    X, 0, NULL, NULL);
+        err = clEnqueueReadBuffer(queue, bufY, CL_TRUE, 0, (lenY*sizeof(double)),
+                                    Y, 0, NULL, NULL);
+    }
+
+#endif
+
+    /* Release OpenCL memory objects. */
+    clReleaseMemObject(bufY);
+    clReleaseMemObject(bufX);
 }
                  
 void cblas_daxpy(const int N, const double alpha, const double *X,
