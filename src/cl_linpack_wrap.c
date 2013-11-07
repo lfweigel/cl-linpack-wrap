@@ -3,6 +3,8 @@
  * Author: Xiang Gong <xgong@ece.neu.edu>
  */
 
+#include <assert.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "cl_linpack_wrap.h"
@@ -68,9 +70,27 @@ static int ContextInit()
         clReleaseContext(ctx);
         return -1;
     }
+
+    context_initialized = 1;
+
+    /* Return */
+    return 1;
 }
 
-static void ContextDestroy()
+static void fatal(const char *fmt, ...)
+{
+    va_list va;
+    va_start(va, fmt);
+    fprintf(stderr, "fatal: ");
+    vfprintf(stderr, fmt, va);
+    fprintf(stderr, "\n");
+    fflush(NULL);
+    exit(1);
+}
+
+/* Public functions */
+
+void ContextDestroy()
 {
     /* Finalize work with clAmdBlas. */
     clAmdBlasTeardown();
@@ -80,14 +100,14 @@ static void ContextDestroy()
     clReleaseContext(ctx);
 }
 
-
-/* Public functions */
-
 int cblas_errprn(int ierr, int info, char *form, ...)
 {
     __NOT_IMPL__
     /* Init context if neccesary */
     ContextInit();
+
+    /* Return */
+    return 0;
 }
 
 
@@ -102,6 +122,9 @@ float cblas_sdsdot(const int N, const float alpha, const float *X,
     __NOT_IMPL__
     /* Init context if neccesary */
     ContextInit();
+
+    /* Return */
+    return 0.0f;
 }
                     
 double cblas_dsdot(const int N, const float *X, const int incX, const float *Y,
@@ -110,6 +133,9 @@ double cblas_dsdot(const int N, const float *X, const int incX, const float *Y,
     __NOT_IMPL__
     /* Init context if neccesary */
     ContextInit();
+
+    /* Return */
+    return 0.0f;
 }
                    
 float cblas_sdot(const int N, const float *X, const int incX,
@@ -118,6 +144,9 @@ float cblas_sdot(const int N, const float *X, const int incX,
     __NOT_IMPL__
     /* Init context if neccesary */
     ContextInit();
+
+    /* Return */
+    return 0.0f;
 }
                   
 double cblas_ddot(const int N, const double *X, const int incX,
@@ -126,6 +155,9 @@ double cblas_ddot(const int N, const double *X, const int incX,
     __NOT_IMPL__
     /* Init context if neccesary */
     ContextInit();
+
+    /* Return */
+    return 0.0f;
 }
                   
 
@@ -174,6 +206,9 @@ float cblas_snrm2(const int N, const float *X, const int incX)
     __NOT_IMPL__
     /* Init context if neccesary */
     ContextInit();
+
+    /* Return */
+    return 0.0f;
 }
 
 float cblas_sasum(const int N, const float *X, const int incX)
@@ -181,6 +216,9 @@ float cblas_sasum(const int N, const float *X, const int incX)
     __NOT_IMPL__
     /* Init context if neccesary */
     ContextInit();
+
+    /* Return */
+    return 0.0f;
 }
 
 
@@ -189,6 +227,9 @@ double cblas_dnrm2(const int N, const double *X, const int incX)
     __NOT_IMPL__
     /* Init context if neccesary */
     ContextInit();
+
+    /* Return */
+    return 0.0f;
 }
 
 double cblas_dasum(const int N, const double *X, const int incX)
@@ -196,6 +237,9 @@ double cblas_dasum(const int N, const double *X, const int incX)
     __NOT_IMPL__
     /* Init context if neccesary */
     ContextInit();
+
+    /* Return */
+    return 0.0f;
 }
 
 
@@ -204,6 +248,9 @@ float cblas_scnrm2(const int N, const void *X, const int incX)
     __NOT_IMPL__
     /* Init context if neccesary */
     ContextInit();
+
+    /* Return */
+    return 0.0f;
 }
 
 float cblas_scasum(const int N, const void *X, const int incX)
@@ -211,6 +258,9 @@ float cblas_scasum(const int N, const void *X, const int incX)
     __NOT_IMPL__
     /* Init context if neccesary */
     ContextInit();
+
+    /* Return */
+    return 0.0f;
 }
 
 
@@ -219,6 +269,9 @@ double cblas_dznrm2(const int N, const void *X, const int incX)
     __NOT_IMPL__
     /* Init context if neccesary */
     ContextInit();
+
+    /* Return */
+    return 0.0f;
 }
 
 double cblas_dzasum(const int N, const void *X, const int incX)
@@ -226,6 +279,9 @@ double cblas_dzasum(const int N, const void *X, const int incX)
     __NOT_IMPL__
     /* Init context if neccesary */
     ContextInit();
+
+    /* Return */
+    return 0.0f;
 }
 
 
@@ -238,6 +294,9 @@ size_t cblas_isamax(const int N, const float *X, const int incX)
     __NOT_IMPL__
     /* Init context if neccesary */
     ContextInit();
+
+    /* Return */
+    return 0;
 }
 
 size_t cblas_idamax(const int N, const double *X, const int incX)
@@ -305,7 +364,7 @@ size_t cblas_idamax(const int N, const double *X, const int incX)
     err = clEnqueueWriteBuffer(queue, bufX, CL_TRUE, 0, (lenX*sizeof(double)) , X, 0, NULL, NULL);
 
     /* Call clAmdBlas function. */
-    err = clAmdBlasiDamax( N, iMax, 0, bufX, 0, incx, scratchBuf,
+    err = clAmdBlasiDamax( N, iMax, 0, bufX, 0, incX, scratchBuf,
                                     1, &queue, 0, NULL, &event); 
     if (err != CL_SUCCESS) {
         printf("clAmdBlasiDamax() failed with %d\n", err);
@@ -337,6 +396,9 @@ size_t cblas_icamax(const int N, const void *X, const int incX)
     __NOT_IMPL__
     /* Init context if neccesary */
     ContextInit();
+
+    /* Return */
+    return 0;
 }
 
 size_t cblas_izamax(const int N, const void *X, const int incX)
@@ -344,6 +406,9 @@ size_t cblas_izamax(const int N, const void *X, const int incX)
     __NOT_IMPL__
     /* Init context if neccesary */
     ContextInit();
+
+    /* Return */
+    return 0;
 }
 
 
@@ -428,8 +493,6 @@ void cblas_dswap(const int N, double *X, const int incX,
     for (i = 0; i < lenY; ++i)
         Y_s[i] = (float)Y[i];
 
-#else
-
     /* Prepare OpenCL memory objects and place vectors inside them. */
     bufX = clCreateBuffer(ctx, CL_MEM_READ_WRITE, (lenX*sizeof(float)), NULL, &err);
     bufY = clCreateBuffer(ctx, CL_MEM_READ_WRITE, (lenY*sizeof(float)), NULL, &err);
@@ -438,7 +501,7 @@ void cblas_dswap(const int N, double *X, const int incX,
     err = clEnqueueWriteBuffer(queue, bufY, CL_TRUE, 0, (lenY*sizeof(float)), Y_s, 0, NULL, NULL);
 
     /* Call clAmdBlas function. */
-    err = clAmdBlasDswap( N, bufX, 0, incx, bufY, 0, incy, 1, &queue, 0, NULL, &event); 
+    err = clAmdBlasDswap( N, bufX, 0, incX, bufY, 0, incY, 1, &queue, 0, NULL, &event); 
     if (err != CL_SUCCESS) {
         printf("clAmdBlasDswap() failed with %d\n", err);
         ret = 1;
@@ -448,9 +511,9 @@ void cblas_dswap(const int N, double *X, const int incX,
         err = clWaitForEvents(1, &event);
 
         /* Fetch results of calculations from GPU memory. */
-        err = clEnqueueReadBuffer(queue, bufX, CL_TRUE, 0, (lenX*sizeof(double)),
+        err = clEnqueueReadBuffer(queue, bufX, CL_TRUE, 0, (lenX*sizeof(float)),
                                     X_s, 0, NULL, NULL);
-        err = clEnqueueReadBuffer(queue, bufY, CL_TRUE, 0, (lenY*sizeof(double)),
+        err = clEnqueueReadBuffer(queue, bufY, CL_TRUE, 0, (lenY*sizeof(float)),
                                     Y_s, 0, NULL, NULL);
     }
 
@@ -463,6 +526,32 @@ void cblas_dswap(const int N, double *X, const int incX,
     /* Free single precision */
     free(X_s);
     free(Y_s);
+
+#else
+
+    /* Prepare OpenCL memory objects and place matrices inside them. */
+    bufX = clCreateBuffer(ctx, CL_MEM_READ_ONLY, (lenX*sizeof(cl_float)), NULL, &err);
+    bufY = clCreateBuffer(ctx, CL_MEM_READ_WRITE, (lenY*sizeof(cl_float)), NULL, &err);
+
+    err = clEnqueueWriteBuffer(queue, bufX, CL_TRUE, 0, (lenX*sizeof(cl_float)), X, 0, NULL, NULL);
+    err = clEnqueueWriteBuffer(queue, bufY, CL_TRUE, 0, (lenY*sizeof(cl_float)), Y, 0, NULL, NULL);
+
+    /* Call clAmdBlas function. */
+    err = clAmdBlasScopy( N, bufX, 0, incX, bufY, 0, incY, 1, &queue, 0, NULL, &event); 
+    if (err != CL_SUCCESS) {
+        printf("clAmdBlasScopy() failed with %d\n", err);
+        ret = 1;
+    }
+    else {
+        /* Wait for calculations to be finished. */
+        err = clWaitForEvents(1, &event);
+
+        /* Fetch results of calculations from GPU memory. */
+        err = clEnqueueReadBuffer(queue, bufX, CL_TRUE, 0, (lenX*sizeof(cl_float)),
+                                    X, 0, NULL, NULL);
+        err = clEnqueueReadBuffer(queue, bufY, CL_TRUE, 0, (lenY*sizeof(cl_float)),
+                                    Y, 0, NULL, NULL);
+    }
 
 #endif
 
@@ -1163,7 +1252,7 @@ void cblas_dtrsv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
 
     /* Call clAmdBlas function. */
     err = clAmdBlasDtrsv(order, uploA, transA, diagA, N,
-                         bufA, 0, lda, bufX, 0, incx, 1, &queue, 0, NULL, &event);
+                         bufA, 0, lda, bufX, 0, incX, 1, &queue, 0, NULL, &event);
                          
     if (err != CL_SUCCESS) {
         printf("clAmdBlasDtrsv() failed with %d\n", err);
@@ -1805,10 +1894,6 @@ void cblas_sgemm(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE TransA
     ContextInit();
 
     cl_mem bufA, bufB, bufC;
-    size_t off  = 1;
-    size_t offA = K + 1;   /* K + off */
-    size_t offB = N + 1;   /* N + off */
-    size_t offC = N + 1;   /* N + off */
 
     enum clAmdBlasOrder order = Order - 101;
     enum clAmdBlasTranspose transA = TransA - 111;
@@ -1918,10 +2003,6 @@ void cblas_dgemm(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE TransA
     ContextInit();
 
     cl_mem bufA, bufB, bufC;
-    size_t off  = 1;
-    size_t offA = K + 1;   /* K + off */
-    size_t offB = N + 1;   /* N + off */
-    size_t offC = N + 1;   /* N + off */
 
     enum clAmdBlasOrder order = Order - 101;
     enum clAmdBlasTranspose transA = TransA - 111;
@@ -1937,16 +2018,19 @@ void cblas_dgemm(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE TransA
     float *C_s = calloc(1, M * N * sizeof(float));
 
     for (i = 0; i < M * K; ++i)
+    {
         A_s[i] = (float)A[i];
+        printf("%f <- %f\n",A_s[i], A[i]);
+    }
     for (i = 0; i < K * N; ++i)
         B_s[i] = (float)B[i];
 
     /* Prepare OpenCL memory objects and place matrices inside them. */
-    bufA = clCreateBuffer(ctx, CL_MEM_READ_ONLY, M * K * sizeof(float),
+    bufA = clCreateBuffer(ctx, CL_MEM_READ_ONLY, M * K * sizeof(float*),
                           NULL, &err);
-    bufB = clCreateBuffer(ctx, CL_MEM_READ_ONLY, K * N * sizeof(float),
+    bufB = clCreateBuffer(ctx, CL_MEM_READ_ONLY, K * N * sizeof(float*),
                           NULL, &err);
-    bufC = clCreateBuffer(ctx, CL_MEM_READ_WRITE, M * N * sizeof(float),
+    bufC = clCreateBuffer(ctx, CL_MEM_READ_WRITE, M * N * sizeof(float*),
                           NULL, &err);
 
     err = clEnqueueWriteBuffer(queue, bufA, CL_TRUE, 0,
@@ -1957,8 +2041,8 @@ void cblas_dgemm(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE TransA
         M * N * sizeof(float), C_s, 0, NULL, NULL);
 
     /* Call clAmdBlas function. */
-    err = clAmdBlasSgemm(order, transA, transB, M, N, K, alpha, bufA,
-                         lda, bufB, ldb, beta, bufC, ldc, 1, &queue,
+    err = clAmdBlasSgemm(order, transA, transB, M, N, K, (float)alpha, bufA,
+                         lda, bufB, ldb, (float)beta, bufC, ldc, 1, &queue,
                          0, NULL, &event);
     if (err != CL_SUCCESS) {
         printf("clAmdBlasSgemm() failed with %d\n", err);
@@ -1976,7 +2060,10 @@ void cblas_dgemm(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE TransA
 
     /* And refresh double precision matrix C */
     for (i = 0; i < M * N; ++i)
+    {
         C[i] = (double)C_s[i];
+        printf("%f <- %f\n", C[i], C_s[i]);        
+    }
 
     /* Free single precision copy */
     free(A_s);
