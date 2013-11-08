@@ -2022,14 +2022,15 @@ void cblas_dgemm(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE TransA
         A_s[i] = (float)A[i];
     for (i = 0; i < K * N; ++i)
         B_s[i] = (float)B[i];
-    
+    for (i = 0; i < M * N; ++i)
+        C_s[i] = (float)C[i];
 
     /* Prepare OpenCL memory objects and place matrices inside them. */
-    bufA = clCreateBuffer(ctx, CL_MEM_READ_ONLY, M * K * sizeof(float*),
+    bufA = clCreateBuffer(ctx, CL_MEM_READ_ONLY, M * K * sizeof(float),
                           NULL, &err);
-    bufB = clCreateBuffer(ctx, CL_MEM_READ_ONLY, K * N * sizeof(float*),
+    bufB = clCreateBuffer(ctx, CL_MEM_READ_ONLY, K * N * sizeof(float),
                           NULL, &err);
-    bufC = clCreateBuffer(ctx, CL_MEM_READ_WRITE, M * N * sizeof(float*),
+    bufC = clCreateBuffer(ctx, CL_MEM_READ_WRITE, M * N * sizeof(float),
                           NULL, &err);
 
     err = clEnqueueWriteBuffer(queue, bufA, CL_TRUE, 0,
