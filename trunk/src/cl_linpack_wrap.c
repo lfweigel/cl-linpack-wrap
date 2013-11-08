@@ -502,7 +502,7 @@ void cblas_dswap(const int N, double *X, const int incX,
     err = clEnqueueWriteBuffer(queue, bufY, CL_TRUE, 0, (lenY*sizeof(float)), Y_s, 0, NULL, NULL);
 
     /* Call clAmdBlas function. */
-    err = clAmdBlasDswap( N, bufX, 0, incX, bufY, 0, incY, 1, &queue, 0, NULL, &event); 
+    err = clAmdBlasDswap(N, bufX, 0, incX, bufY, 0, incY, 1, &queue, 0, NULL, &event); 
     if (err != CL_SUCCESS) {
         printf("clAmdBlasDswap() failed with %d\n", err);
         ret = 1;
@@ -520,9 +520,9 @@ void cblas_dswap(const int N, double *X, const int incX,
 
     /* Refresh double precision */
     for (i = 0; i < lenX; ++i)
-        X[i] = X_s[i];
+        X[i] = (double)X_s[i];
     for (i = 0; i < lenY; ++i)
-        Y[i] = Y_s[i];
+        Y[i] = (double)Y_s[i];
 
     /* Free single precision */
     free(X_s);
@@ -632,8 +632,6 @@ void cblas_dcopy(const int N, const double *X, const int incX,
         err = clWaitForEvents(1, &event);
 
         /* Fetch results of calculations from GPU memory. */
-        err = clEnqueueReadBuffer(queue, bufX, CL_TRUE, 0, (lenX*sizeof(double)),
-                                    X, 0, NULL, NULL);
         err = clEnqueueReadBuffer(queue, bufY, CL_TRUE, 0, (lenY*sizeof(double)),
                                     Y, 0, NULL, NULL);
     }
@@ -672,7 +670,7 @@ void cblas_daxpy(const int N, const double alpha, const double *X,
     err = clEnqueueWriteBuffer(queue, bufY, CL_TRUE, 0, (lenY*sizeof(float)), Y_s, 0, NULL, NULL);
 
     /* Call clAmdBlas function. */
-    err = clAmdBlasSaxpy( N, alpha, bufX, 0, incX, bufY, 0, incY, 1, &queue, 0, NULL, &event); 
+    err = clAmdBlasSaxpy(N, alpha, bufX, 0, incX, bufY, 0, incY, 1, &queue, 0, NULL, &event); 
     if (err != CL_SUCCESS) {
         printf("clAmdBlasSaxpy() failed with %d\n", err);
         ret = 1;
@@ -1082,7 +1080,7 @@ void cblas_dgemv(const enum CBLAS_ORDER Order,
     }
 
     /* Refresh single precision vector Y */
-    err = clEnqueueWriteBuffer(queue, bufY, CL_TRUE, 0,
+    err = clEnqueueReadBuffer(queue, bufY, CL_TRUE, 0,
         M * sizeof(float), Y_s, 0, NULL, NULL);
 
     /* Refresh double precision vector Y */
@@ -2207,7 +2205,7 @@ void cblas_dtrsm(const enum CBLAS_ORDER Order, const enum CBLAS_SIDE Side,
 
 
     /* Refresh the matrix B_s */
-    err = clEnqueueWriteBuffer(queue, bufB, CL_TRUE, 0,
+    err = clEnqueueReadBuffer(queue, bufB, CL_TRUE, 0,
         M * N * sizeof(float), B_s, 0, NULL, NULL);
 
     /* Refresh the matrix B */
