@@ -2178,10 +2178,10 @@ void cblas_dtrsm(const enum CBLAS_ORDER Order, const enum CBLAS_SIDE Side,
 
     int i;
 
-    float *A_s = calloc(1, M * N * sizeof(float));
+    float *A_s = calloc(1, M * M * sizeof(float));
     float *B_s = calloc(1, M * N * sizeof(float));
 
-    for (i = 0; i < M * N; ++i)
+    for (i = 0; i < M * M; ++i)
         A_s[i] = (float)A[i];
     for (i = 0; i < M * N; ++i)
         B_s[i] = (float)B[i];
@@ -2209,7 +2209,6 @@ void cblas_dtrsm(const enum CBLAS_ORDER Order, const enum CBLAS_SIDE Side,
         /* Wait for calculations to be finished. */
         err = clWaitForEvents(1, &event);
     }
-
 
     /* Refresh the matrix B_s */
     err = clEnqueueReadBuffer(queue, bufB, CL_TRUE, 0,
