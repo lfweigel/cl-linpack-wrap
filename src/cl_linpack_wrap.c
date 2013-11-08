@@ -502,7 +502,7 @@ void cblas_dswap(const int N, double *X, const int incX,
     err = clEnqueueWriteBuffer(queue, bufY, CL_TRUE, 0, (lenY*sizeof(float)), Y_s, 0, NULL, NULL);
 
     /* Call clAmdBlas function. */
-    err = clAmdBlasDswap(N, bufX, 0, incX, bufY, 0, incY, 1, &queue, 0, NULL, &event); 
+    err = clAmdBlasSswap(N, bufX, 0, incX, bufY, 0, incY, 1, &queue, 0, NULL, &event); 
     if (err != CL_SUCCESS) {
         printf("clAmdBlasDswap() failed with %d\n", err);
         ret = 1;
@@ -1052,6 +1052,8 @@ void cblas_dgemv(const enum CBLAS_ORDER Order,
         A_s[i] = (float)A[i];
     for (i = 0; i < N; ++i)
         X_s[i] = (float)X[i];
+    for (i = 0; i < M; ++i)
+        Y_s[i] = (float)Y[i];
 
     /* Prepare OpenCL memory objects and place matrices inside them. */
     bufA = clCreateBuffer(ctx, CL_MEM_READ_ONLY, M * N * sizeof(float),
@@ -1588,6 +1590,8 @@ void cblas_dger(const enum CBLAS_ORDER Order, const int M, const int N,
     float *X_s = calloc(1, M * sizeof(float));
     float *Y_s = calloc(1, N * sizeof(float));
 
+    for (i = 0; i < M * lda; ++i)
+        A_s[i] = (float)A[i];    
     for (i = 0; i < M; ++i)
         X_s[i] = (float)X[i];
     for (i = 0; i < N; ++i)
@@ -2165,10 +2169,10 @@ void cblas_dtrsm(const enum CBLAS_ORDER Order, const enum CBLAS_SIDE Side,
     cl_mem bufA, bufB;
 
     enum clAmdBlasOrder order = Order - 101;
-    enum clAmdBlasSide side = Side - 141;
     enum clAmdBlasUplo uploA = Uplo - 121;
     enum clAmdBlasTranspose transA = TransA - 111;
     enum clAmdBlasDiag diagA = Diag - 131;
+    enum clAmdBlasSide side = Side - 141;
 
 #ifdef DOUBLE_AS_SINGLE
 
