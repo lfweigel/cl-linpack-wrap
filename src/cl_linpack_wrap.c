@@ -661,6 +661,8 @@ void cblas_daxpy(const int N, const double alpha, const double *X,
 
     for (i = 0; i < lenX; ++i)
         X_s[i] = (float)X[i];
+    for (i = 0; i < lenY; ++i)
+        Y_s[i] = (float)Y[i];
 
     /* Prepare OpenCL memory objects and place matrices inside them. */
     bufX = clCreateBuffer(ctx, CL_MEM_READ_ONLY, (lenX*sizeof(float)), NULL, &err);
