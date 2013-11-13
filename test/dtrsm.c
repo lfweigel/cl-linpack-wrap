@@ -28,10 +28,6 @@ static double B[] = {
 };
 static const int ldb = 5;        /* i.e. ldb = N */
 
-static const int off  = 1;
-static const int offA = 4 + 1;   /* M + off */
-static const int offB = 5 + 1;   /* N + off */
-
 static void
 printResult()
 {
