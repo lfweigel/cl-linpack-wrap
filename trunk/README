@@ -1,3 +1,5 @@
+NOTICE: OpenCL context is automatically created, but programmers need to manually destoy it by calling ContextDestroy function.
+
 To compile wrapper library
 	1. export AMDBLASROOT=PATH_TO_AMD_CL_BLAS_ROOT
 	2. libtoolize && aclocal && autoconf && automake --add-missing && ./configure && make
