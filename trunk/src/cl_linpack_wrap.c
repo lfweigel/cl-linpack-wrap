@@ -1190,7 +1190,7 @@ void cblas_dtrsv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
     enum clAmdBlasOrder order = Order - 101;
     enum clAmdBlasUplo uploA = Uplo - 121;
     enum clAmdBlasTranspose transA = TransA - 111;
-    enum clAmdBlasDiag diagA = Diag - 131;
+    enum clAmdBlasDiag diagA = Diag == CblasNonUnit ? 1 : 0;
 
 #ifdef DOUBLE_AS_SINGLE
 
@@ -2171,7 +2171,7 @@ void cblas_dtrsm(const enum CBLAS_ORDER Order, const enum CBLAS_SIDE Side,
     enum clAmdBlasOrder order = Order - 101;
     enum clAmdBlasUplo uploA = Uplo - 121;
     enum clAmdBlasTranspose transA = TransA - 111;
-    enum clAmdBlasDiag diagA = Diag - 131;
+    enum clAmdBlasDiag diagA = Diag == CblasNonUnit ? 1 : 0;
     enum clAmdBlasSide side = Side - 141;
 
 #ifdef DOUBLE_AS_SINGLE
