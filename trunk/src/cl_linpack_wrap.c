@@ -1,5 +1,5 @@
 /*
- * clAmdBlas wrappers for linpack
+ * clblas wrappers for linpack
  * Author: Xiang Gong <xgong@ece.neu.edu>
  */
 
@@ -63,10 +63,10 @@ static int ContextInit()
         return -1;
     }
 
-    /* Setup clAmdBlas. */
-    err = clAmdBlasSetup();
+    /* Setup clblas. */
+    err = clblasSetup();
     if (err != CL_SUCCESS) {
-        printf("clAmdBlasSetup() failed with %d\n", err);
+        printf("clblasSetup() failed with %d\n", err);
         clReleaseCommandQueue(queue);
         clReleaseContext(ctx);
         return -1;
@@ -93,8 +93,8 @@ static void fatal(const char *fmt, ...)
 
 void ContextDestroy()
 {
-    /* Finalize work with clAmdBlas. */
-    clAmdBlasTeardown();
+    /* Finalize work with clblas. */
+    clblasTeardown();
 
     /* Release OpenCL working objects. */
     clReleaseCommandQueue(queue);
@@ -331,11 +331,11 @@ size_t cblas_idamax(const int N, const double *X, const int incX)
 
     err = clEnqueueWriteBuffer(queue, bufX, CL_TRUE, 0, (lenX*sizeof(float)) , X_s, 0, NULL, NULL);
 
-    /* Call clAmdBlas function. */
-    err = clAmdBlasiSamax( N, iMax, 0, bufX, 0, incX, scratchBuf,
+    /* Call clblas function. */
+    err = clblasiSamax( N, iMax, 0, bufX, 0, incX, scratchBuf,
                                     1, &queue, 0, NULL, &event); 
     if (err != CL_SUCCESS) {
-        printf("clAmdBlasiSamax() failed with %d\n", err);
+        printf("clblasiSamax() failed with %d\n", err);
         ret = 1;
     }
     else {
@@ -364,11 +364,11 @@ size_t cblas_idamax(const int N, const double *X, const int incX)
 
     err = clEnqueueWriteBuffer(queue, bufX, CL_TRUE, 0, (lenX*sizeof(double)) , X, 0, NULL, NULL);
 
-    /* Call clAmdBlas function. */
-    err = clAmdBlasiDamax( N, iMax, 0, bufX, 0, incX, scratchBuf,
+    /* Call clblas function. */
+    err = clblasiDamax( N, iMax, 0, bufX, 0, incX, scratchBuf,
                                     1, &queue, 0, NULL, &event); 
     if (err != CL_SUCCESS) {
-        printf("clAmdBlasiDamax() failed with %d\n", err);
+        printf("clblasiDamax() failed with %d\n", err);
         ret = 1;
     }
     else {
@@ -501,10 +501,10 @@ void cblas_dswap(const int N, double *X, const int incX,
     err = clEnqueueWriteBuffer(queue, bufX, CL_TRUE, 0, (lenX*sizeof(float)), X_s, 0, NULL, NULL);
     err = clEnqueueWriteBuffer(queue, bufY, CL_TRUE, 0, (lenY*sizeof(float)), Y_s, 0, NULL, NULL);
 
-    /* Call clAmdBlas function. */
-    err = clAmdBlasSswap(N, bufX, 0, incX, bufY, 0, incY, 1, &queue, 0, NULL, &event); 
+    /* Call clblas function. */
+    err = clblasSswap(N, bufX, 0, incX, bufY, 0, incY, 1, &queue, 0, NULL, &event); 
     if (err != CL_SUCCESS) {
-        printf("clAmdBlasDswap() failed with %d\n", err);
+        printf("clblasDswap() failed with %d\n", err);
         ret = 1;
     }
     else {
@@ -537,10 +537,10 @@ void cblas_dswap(const int N, double *X, const int incX,
     err = clEnqueueWriteBuffer(queue, bufX, CL_TRUE, 0, (lenX*sizeof(cl_float)), X, 0, NULL, NULL);
     err = clEnqueueWriteBuffer(queue, bufY, CL_TRUE, 0, (lenY*sizeof(cl_float)), Y, 0, NULL, NULL);
 
-    /* Call clAmdBlas function. */
-    err = clAmdBlasScopy( N, bufX, 0, incX, bufY, 0, incY, 1, &queue, 0, NULL, &event); 
+    /* Call clblas function. */
+    err = clblasScopy( N, bufX, 0, incX, bufY, 0, incY, 1, &queue, 0, NULL, &event); 
     if (err != CL_SUCCESS) {
-        printf("clAmdBlasScopy() failed with %d\n", err);
+        printf("clblasScopy() failed with %d\n", err);
         ret = 1;
     }
     else {
@@ -590,10 +590,10 @@ void cblas_dcopy(const int N, const double *X, const int incX,
     err = clEnqueueWriteBuffer(queue, bufX, CL_TRUE, 0, (lenX*sizeof(float)), X_s, 0, NULL, NULL);
     err = clEnqueueWriteBuffer(queue, bufY, CL_TRUE, 0, (lenY*sizeof(float)), Y_s, 0, NULL, NULL);
 
-    /* Call clAmdBlas function. */
-    err = clAmdBlasScopy( N, bufX, 0, incX, bufY, 0, incY, 1, &queue, 0, NULL, &event); 
+    /* Call clblas function. */
+    err = clblasScopy( N, bufX, 0, incX, bufY, 0, incY, 1, &queue, 0, NULL, &event); 
     if (err != CL_SUCCESS) {
-        printf("clAmdBlasScopy() failed with %d\n", err);
+        printf("clblasScopy() failed with %d\n", err);
         ret = 1;
     }
     else {
@@ -621,10 +621,10 @@ void cblas_dcopy(const int N, const double *X, const int incX,
     err = clEnqueueWriteBuffer(queue, bufX, CL_TRUE, 0, (lenX*sizeof(double)), X, 0, NULL, NULL);
     err = clEnqueueWriteBuffer(queue, bufY, CL_TRUE, 0, (lenY*sizeof(double)), Y, 0, NULL, NULL);
 
-    /* Call clAmdBlas function. */
-    err = clAmdBlasDcopy( N, bufX, 0, incX, bufY, 0, incY, 1, &queue, 0, NULL, &event); 
+    /* Call clblas function. */
+    err = clblasDcopy( N, bufX, 0, incX, bufY, 0, incY, 1, &queue, 0, NULL, &event); 
     if (err != CL_SUCCESS) {
-        printf("clAmdBlasDcopy() failed with %d\n", err);
+        printf("clblasDcopy() failed with %d\n", err);
         ret = 1;
     }
     else {
@@ -671,10 +671,10 @@ void cblas_daxpy(const int N, const double alpha, const double *X,
     err = clEnqueueWriteBuffer(queue, bufX, CL_TRUE, 0, (lenX*sizeof(float)), X_s, 0, NULL, NULL);
     err = clEnqueueWriteBuffer(queue, bufY, CL_TRUE, 0, (lenY*sizeof(float)), Y_s, 0, NULL, NULL);
 
-    /* Call clAmdBlas function. */
-    err = clAmdBlasSaxpy(N, alpha, bufX, 0, incX, bufY, 0, incY, 1, &queue, 0, NULL, &event); 
+    /* Call clblas function. */
+    err = clblasSaxpy(N, alpha, bufX, 0, incX, bufY, 0, incY, 1, &queue, 0, NULL, &event); 
     if (err != CL_SUCCESS) {
-        printf("clAmdBlasSaxpy() failed with %d\n", err);
+        printf("clblasSaxpy() failed with %d\n", err);
         ret = 1;
     }
     else {
@@ -702,10 +702,10 @@ void cblas_daxpy(const int N, const double alpha, const double *X,
     err = clEnqueueWriteBuffer(queue, bufX, CL_TRUE, 0, (lenX*sizeof(double)), X, 0, NULL, NULL);
     err = clEnqueueWriteBuffer(queue, bufY, CL_TRUE, 0, (lenY*sizeof(double)), Y, 0, NULL, NULL);
 
-    /* Call clAmdBlas function. */
-    err = clAmdBlasDaxpy( N, alpha, bufX, 0, incX, bufY, 0, incY, 1, &queue, 0, NULL, &event); 
+    /* Call clblas function. */
+    err = clblasDaxpy( N, alpha, bufX, 0, incX, bufY, 0, incY, 1, &queue, 0, NULL, &event); 
     if (err != CL_SUCCESS) {
-        printf("clAmdBlasDaxpy() failed with %d\n", err);
+        printf("clblasDaxpy() failed with %d\n", err);
         ret = 1;
     }
     else {
@@ -862,11 +862,11 @@ void cblas_dscal(const int N, const double alpha, double *X, const int incX)
     err = clEnqueueWriteBuffer(queue, bufX, CL_TRUE, 0,
         (lenX * sizeof(float)), X_s, 0, NULL, NULL);
 
-    /* Call clAmdBlas function. */
-    err = clAmdBlasSscal( N, alpha, bufX, 0, incX, 1, &queue, 0, NULL, &event);
+    /* Call clblas function. */
+    err = clblasSscal( N, alpha, bufX, 0, incX, 1, &queue, 0, NULL, &event);
 
     if (err != CL_SUCCESS) {
-        printf("clAmdBlasSscal() failed with %d\n", err);
+        printf("clblasSscal() failed with %d\n", err);
         ret = 1;
     }
     else {
@@ -894,11 +894,11 @@ void cblas_dscal(const int N, const double alpha, double *X, const int incX)
     err = clEnqueueWriteBuffer(queue, bufX, CL_TRUE, 0,
         ( lenX * sizeof(double)), X, 0, NULL, NULL);
 
-    /* Call clAmdBlas function. */
-    err = clAmdBlasDscal( N, alpha, bufX, 0, incX, 1, &queue, 0, NULL, &event);
+    /* Call clblas function. */
+    err = clblasDscal( N, alpha, bufX, 0, incX, 1, &queue, 0, NULL, &event);
 
     if (err != CL_SUCCESS) {
-        printf("clAmdBlasDscal() failed with %d\n", err);
+        printf("clblasDscal() failed with %d\n", err);
         ret = 1;
     }
     else {
@@ -1036,8 +1036,8 @@ void cblas_dgemv(const enum CBLAS_ORDER Order,
 
     cl_mem bufA, bufX, bufY;
 
-    enum clAmdBlasOrder order = Order - 101;
-    enum clAmdBlasTranspose transA = TransA - 111;
+    clblasOrder order = Order - 101;
+    clblasTranspose transA = TransA - 111;
 
 #ifdef DOUBLE_AS_SINGLE
 
@@ -1070,11 +1070,11 @@ void cblas_dgemv(const enum CBLAS_ORDER Order,
     err = clEnqueueWriteBuffer(queue, bufY, CL_TRUE, 0,
         M * sizeof(float), Y_s, 0, NULL, NULL);
 
-    /* Call clAmdBlas function. */
-    err = clAmdBlasSgemv(order, transA, M, N, (float)alpha, bufA, lda, bufX, 0, incX,
+    /* Call clblas function. */
+    err = clblasSgemv(order, transA, M, N, (float)alpha, bufA, 0, lda, bufX, 0, incX,
         (float)beta, bufY, 0, incY, 1, &queue, 0, NULL, &event);
     if (err != CL_SUCCESS) {
-        printf("clAmdBlasSgemv() failed with %d\n", err);
+        printf("clblasSgemv() failed with %d\n", err);
         ret = 1;
     }
     else {
@@ -1113,11 +1113,11 @@ void cblas_dgemv(const enum CBLAS_ORDER Order,
     err = clEnqueueWriteBuffer(queue, bufY, CL_TRUE, 0,
         M * sizeof(*Y), Y, 0, NULL, NULL);
 
-    /* Call clAmdBlas function. */
-    err = clAmdBlasSgemv(order, transA, M, N, alpha, bufA, lda, bufX, 0, incX,
+    /* Call clblas function. */
+    err = clblasSgemv(order, transA, M, N, alpha, bufA, lda, bufX, 0, incX,
         beta, bufY, 0, incY, 1, &queue, 0, NULL, &event);
     if (err != CL_SUCCESS) {
-        printf("clAmdBlasSgemv() failed with %d\n", err);
+        printf("clblasSgemv() failed with %d\n", err);
         ret = 1;
     }
     else {
@@ -1187,10 +1187,10 @@ void cblas_dtrsv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
 
     cl_mem bufA, bufX;
 
-    enum clAmdBlasOrder order = Order - 101;
-    enum clAmdBlasUplo uploA = Uplo - 121;
-    enum clAmdBlasTranspose transA = TransA - 111;
-    enum clAmdBlasDiag diagA = Diag == CblasNonUnit ? 1 : 0;
+    clblasOrder order = Order - 101;
+    clblasUplo uploA = Uplo - 121;
+    clblasTranspose transA = TransA - 111;
+    clblasDiag diagA = Diag == CblasNonUnit ? 1 : 0;
 
 #ifdef DOUBLE_AS_SINGLE
 
@@ -1215,12 +1215,12 @@ void cblas_dtrsv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
     err = clEnqueueWriteBuffer(queue, bufX, CL_TRUE, 0,
                     N * sizeof(float), X_s, 0, NULL, NULL);
 
-    /* Call clAmdBlas function. */
-    err = clAmdBlasStrsv(order, uploA, transA, diagA, N,
+    /* Call clblas function. */
+    err = clblasStrsv(order, uploA, transA, diagA, N,
                          bufA, 0, lda, bufX, 0, incX, 1, &queue, 0, NULL, &event);
                          
     if (err != CL_SUCCESS) {
-        printf("clAmdBlasStrsv() failed with %d\n", err);
+        printf("clblasStrsv() failed with %d\n", err);
         ret = 1;
     }
     else {
@@ -1253,12 +1253,12 @@ void cblas_dtrsv(const enum CBLAS_ORDER Order, const enum CBLAS_UPLO Uplo,
     err = clEnqueueWriteBuffer(queue, bufX, CL_TRUE, 0,
                     N * sizeof(double), X, 0, NULL, NULL);
 
-    /* Call clAmdBlas function. */
-    err = clAmdBlasDtrsv(order, uploA, transA, diagA, N,
+    /* Call clblas function. */
+    err = clblasDtrsv(order, uploA, transA, diagA, N,
                          bufA, 0, lda, bufX, 0, incX, 1, &queue, 0, NULL, &event);
                          
     if (err != CL_SUCCESS) {
-        printf("clAmdBlasDtrsv() failed with %d\n", err);
+        printf("clblasDtrsv() failed with %d\n", err);
         ret = 1;
     }
     else {
@@ -1579,7 +1579,7 @@ void cblas_dger(const enum CBLAS_ORDER Order, const int M, const int N,
 
     cl_mem bufA, bufX, bufY;
 
-    enum clAmdBlasOrder order = Order - 101;
+    clblasOrder order = Order - 101;
 
 #ifdef DOUBLE_AS_SINGLE
 
@@ -1612,11 +1612,11 @@ void cblas_dger(const enum CBLAS_ORDER Order, const int M, const int N,
     err = clEnqueueWriteBuffer(queue, bufY, CL_TRUE, 0,
         ( 1 + ( N - 1 )*abs( incY ) ) * sizeof(float), Y_s, 0, NULL, NULL);
 
-    /* Call clAmdBlas function. */
-    err = clAmdBlasSger(order, M, N, alpha, bufX, 0, incX, bufY, 0, incY, 
+    /* Call clblas function. */
+    err = clblasSger(order, M, N, alpha, bufX, 0, incX, bufY, 0, incY, 
         bufA, 0, lda, 1, &queue, 0, NULL, &event);
     if (err != CL_SUCCESS) {
-        printf("clAmdBlasSger() failed with %d\n", err);
+        printf("clblasSger() failed with %d\n", err);
         ret = 1;
     }
     else {
@@ -1654,11 +1654,11 @@ void cblas_dger(const enum CBLAS_ORDER Order, const int M, const int N,
     err = clEnqueueWriteBuffer(queue, bufY, CL_TRUE, 0,
         ( 1 + ( N - 1 )*abs( incY ) ) * sizeof(double), Y, 0, NULL, NULL);
 
-    /* Call clAmdBlas function. */
-    err = clAmdBlasDger(order, M, N, alpha, bufX, 0, incX, bufY, 0, incY, 
+    /* Call clblas function. */
+    err = clblasDger(order, M, N, alpha, bufX, 0, incX, bufY, 0, incY, 
         bufA, 0, lda, 1, &queue, 0, NULL, &event);
     if (err != CL_SUCCESS) {
-        printf("clAmdBlasDger() failed with %d\n", err);
+        printf("clblasDger() failed with %d\n", err);
         ret = 1;
     }
     else {
@@ -1900,9 +1900,9 @@ void cblas_sgemm(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE TransA
 
     cl_mem bufA, bufB, bufC;
 
-    enum clAmdBlasOrder order = Order - 101;
-    enum clAmdBlasTranspose transA = TransA - 111;
-    enum clAmdBlasTranspose transB = TransB - 111;
+    clblasOrder order = Order - 101;
+    clblasTranspose transA = TransA - 111;
+    clblasTranspose transB = TransB - 111;
 
     /* Prepare OpenCL memory objects and place matrices inside them. */
     bufA = clCreateBuffer(ctx, CL_MEM_READ_ONLY, M * K * sizeof(float),
@@ -1919,12 +1919,12 @@ void cblas_sgemm(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE TransA
     err = clEnqueueWriteBuffer(queue, bufC, CL_TRUE, 0,
         M * N * sizeof(float), C, 0, NULL, NULL);
 
-    /* Call clAmdBlas function. */
-    err = clAmdBlasSgemm(order, transA, transB, M, N, K, alpha, bufA,
-                         lda, bufB, ldb, beta, bufC, ldc, 1, &queue,
+    /* Call clblas function. */
+    err = clblasSgemm(order, transA, transB, M, N, K, alpha, bufA,
+                         0, lda, bufB, 0, ldb, beta, bufC, 0,ldc, 1, &queue,
                          0, NULL, &event);
     if (err != CL_SUCCESS) {
-        printf("clAmdBlasSgemm() failed with %d\n", err);
+        printf("clblasSgemm() failed with %d\n", err);
         ret = 1;
     }
     else {
@@ -2009,9 +2009,15 @@ void cblas_dgemm(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE TransA
 
     cl_mem bufA, bufB, bufC;
 
-    enum clAmdBlasOrder order = Order - 101;
-    enum clAmdBlasTranspose transA = TransA - 111;
-    enum clAmdBlasTranspose transB = TransB - 111;
+#ifdef CL_AMD_BLAS
+    clblasOrder order = Order - 101;
+    clblasTranspose transA = TransA - 111;
+    clblasTranspose transB = TransB - 111;
+#else
+    clblasOrder order = Order - 101;
+    clblasTranspose transA = TransA - 111;
+    clblasTranspose transB = TransB - 111;
+#endif
 
 #ifdef DOUBLE_AS_SINGLE
 
@@ -2044,12 +2050,12 @@ void cblas_dgemm(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE TransA
     err = clEnqueueWriteBuffer(queue, bufC, CL_TRUE, 0,
         M * N * sizeof(float), C_s, 0, NULL, NULL);
 
-    /* Call clAmdBlas function. */
-    err = clAmdBlasSgemm(order, transA, transB, M, N, K, (float)alpha, bufA,
-                         lda, bufB, ldb, (float)beta, bufC, ldc, 1, &queue,
+    /* Call clblas function. */
+    err = clblasSgemm(order, transA, transB, M, N, K, (float)alpha, bufA, 0,
+                         lda, bufB, 0, ldb, (float)beta, bufC, 0, ldc, 1, &queue,
                          0, NULL, &event);
     if (err != CL_SUCCESS) {
-        printf("clAmdBlasSgemm() failed with %d\n", err);
+        printf("clblasSgemm() failed with %d\n", err);
         ret = 1;
     }
     else {
@@ -2088,12 +2094,12 @@ void cblas_dgemm(const enum CBLAS_ORDER Order, const enum CBLAS_TRANSPOSE TransA
     err = clEnqueueWriteBuffer(queue, bufC, CL_TRUE, 0,
         M * N * sizeof(double), C, 0, NULL, NULL);
 
-    /* Call clAmdBlas function. */
-    err = clAmdBlasDgemm(order, transA, transB, M, N, K, alpha, bufA,
+    /* Call clblas function. */
+    err = clblasDgemm(order, transA, transB, M, N, K, alpha, bufA,
                          lda, bufB, ldb, beta, bufC, ldc, 1, &queue,
                          0, NULL, &event);
     if (err != CL_SUCCESS) {
-        printf("clAmdBlasSgemm() failed with %d\n", err);
+        printf("clblasSgemm() failed with %d\n", err);
         ret = 1;
     }
     else {
@@ -2168,11 +2174,11 @@ void cblas_dtrsm(const enum CBLAS_ORDER Order, const enum CBLAS_SIDE Side,
 
     cl_mem bufA, bufB;
 
-    enum clAmdBlasOrder order = Order - 101;
-    enum clAmdBlasUplo uploA = Uplo - 121;
-    enum clAmdBlasTranspose transA = TransA - 111;
-    enum clAmdBlasDiag diagA = Diag == CblasNonUnit ? 1 : 0;
-    enum clAmdBlasSide side = Side - 141;
+    clblasOrder order = Order - 101;
+    clblasUplo uploA = Uplo - 121;
+    clblasTranspose transA = TransA - 111;
+    clblasDiag diagA = Diag == CblasNonUnit ? 1 : 0;
+    clblasSide side = Side - 141;
 
 #ifdef DOUBLE_AS_SINGLE
 
@@ -2197,12 +2203,12 @@ void cblas_dtrsm(const enum CBLAS_ORDER Order, const enum CBLAS_SIDE Side,
     err = clEnqueueWriteBuffer(queue, bufB, CL_TRUE, 0,
         M * N * sizeof(float), B_s, 0, NULL, NULL);
 
-    /* Call clAmdBlas function. */
-    err = clAmdBlasStrsm(order, side, uploA, transA, diagA, M, N,
-                         (float)alpha, bufA, lda, bufB, ldb, 1, &queue, 0,
+    /* Call clblas function. */
+    err = clblasStrsm(order, side, uploA, transA, diagA, M, N,
+                         (float)alpha, bufA, 0, lda, bufB, 0, ldb, 1, &queue, 0,
                          NULL, &event);
     if (err != CL_SUCCESS) {
-        printf("clAmdBlasStrsm() failed with %d\n", err);
+        printf("clblasStrsm() failed with %d\n", err);
         ret = 1;
     }
     else {
@@ -2235,12 +2241,12 @@ void cblas_dtrsm(const enum CBLAS_ORDER Order, const enum CBLAS_SIDE Side,
     err = clEnqueueWriteBuffer(queue, bufB, CL_TRUE, 0,
         M * N * sizeof(double), B, 0, NULL, NULL);
 
-    /* Call clAmdBlas function. */
-    err = clAmdBlasDtrsm(order, side, uploA, transA, diagA, M, N,
+    /* Call clblas function. */
+    err = clblasDtrsm(order, side, uploA, transA, diagA, M, N,
                          alpha, bufA, lda, bufB, ldb, 1, &queue, 0,
                          NULL, &event);
     if (err != CL_SUCCESS) {
-        printf("clAmdBlasDtrsm() failed with %d\n", err);
+        printf("clblasDtrsm() failed with %d\n", err);
         ret = 1;
     }
     else {

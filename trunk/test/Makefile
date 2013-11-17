@@ -1,8 +1,9 @@
+CBLASROOT = ../../clBLAS
 CC = gcc
 CFLAGS = -Wall -Werror -O3 -g
-INCLUDES = -I../src -I/opt/clAmdBlas-1.10.321/include/ -I/opt/AMDAPP/include/
-LD_FLAGS = -L../lib/.libs/ -L/opt/clAmdBlas-1.10.321/lib32/
-LDADD = -lcl-linpack -lclAmdBlas
+INCLUDES = -I../src -I$(CBLASROOT)/src -I/opt/AMDAPP/include/
+LD_FLAGS = -L../lib/.libs/ -L$(CBLASROOT)/src/library
+LDADD = -lcl-linpack -lclBLAS
 
 TARGET = daxpy dcopy dgemm dgemv dger dscale dswap dtrsm dtrsv idamax
 

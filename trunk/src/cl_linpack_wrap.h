@@ -6,7 +6,7 @@ extern "C" {
 #endif
 
 /* Includes */
-#include <clAmdBlas.h>
+#include <clBLAS.h>
 #include "f2c.h"
 
 extern char *clblas_error_not_impl;
