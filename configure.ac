@@ -137,34 +137,34 @@ then
 fi
 
 ######################
-# Test AMD OpenCL BLAS
+# Test CL BLAS
 ######################
-have_amd_cl_blas=no
+have_cl_blas=no
 
-if test "x$AMDBLASROOT" != "x"
+if test "x$CLBLASROOT" != "x"
 then
 	# Use temporary CFLAGS, LDFLAGS
 	saved_cflags="$CFLAGS"
 	saved_ldflags="$LDFLAGS"
 	saved_libs="$LIBS"
-	CFLAGS="-I$AMDAPPSDKROOT/include -I$AMDBLASROOT/include"
-	LDFLAGS="-L$AMDBLASROOT/lib32/ -L$AMDBLASROOT/lib64"
-	LIBS="-lclAmdBlas"
+	CFLAGS="-I$AMDAPPSDKROOT/include -I$CLBLASROOT/src"
+	LDFLAGS="-L$CLBLASROOT/src/library/"
+	LIBS="-lclBLAS"
 
 	# Try program
 	AC_LINK_IFELSE(
 	[
 		AC_LANG_PROGRAM(
-			[[#include <clAmdBlas.h>]],
+			[[#include <clBLAS.h>]],
 			[[
 			    cl_uint major,minor,patch;
-			    clAmdBlasStatus err;
-			    err = clAmdBlasGetVersion(&major,&minor,&patch);
+			    clblasStatus err;
+			    err = clblasGetVersion(&major,&minor,&patch);
 			]]
 		)
 	],
 	[
-		have_amd_cl_blas=yes
+		have_cl_blas=yes
 	])
 
 	# Restore original CFLAGS, LDFLAGS, LIBS
@@ -174,23 +174,24 @@ then
 fi
 
 # Warning if not
-if test "x$have_amd_cl_blas" = "xno"
+if test "x$have_cl_blas" = "xno"
 then
 	AC_MSG_WARN([
 	
-	The AMD OpenCL BLAS library is not presently installed in your system, as
-	detected by the absence of the AMDBLASROOT environment variable. The
+	The CL BLAS library is not presently installed in your system, as
+	detected by the absence of the CLBLASROOT environment variable. The
 	headers and libraries provided by this package are needed.
 	])
 fi
 
-AM_CONDITIONAL(BUILD_CLLINPACKWRAP, test x$have_amd_opencl = xyes -a x$have_amd_cl_blas = xyes)
-if(test x$have_amd_opencl = xyes -a x$have_amd_cl_blas = xyes)
+
+AM_CONDITIONAL(BUILD_CLLINPACKWRAP, test x$have_amd_opencl = xyes -a x$have_cl_blas = xyes)
+if(test x$have_amd_opencl = xyes -a x$have_cl_blas = xyes)
 then
 	AC_DEFINE(BUILD_CLLINPACKWRAP, [1])
-	CLLINPACKWRAP_LDFLAGS="-L$AMDBLASROOT/lib32/ -L$AMDBLASROOT/lib64 -L$AMDAPPSDKROOT/lib/x86 -L$AMDAPPSDKROOT/lib/x86_64 -lclAmdBlas -lOpenCL"
+	CLLINPACKWRAP_LDFLAGS="-L$CLBLASROOT/src/library -L$AMDAPPSDKROOT/lib/x86 -L$AMDAPPSDKROOT/lib/x86_64 -lclBLAS -lOpenCL"
 	AC_SUBST([CLLINPACKWRAP_LDFLAGS])
-	CLLINPACKWRAP_INCLUDES="-I$AMDAPPSDKROOT/include -I$AMDBLASROOT/include"
+	CLLINPACKWRAP_INCLUDES="-I$AMDAPPSDKROOT/include -I$CLBLASROOT/src"
 	AC_SUBST([CLLINPACKWRAP_INCLUDES])
 fi
 

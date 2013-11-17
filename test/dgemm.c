@@ -64,7 +64,7 @@ int main(int argc, char const *argv[])
 {
 	/* Call */
 	cblas_dgemm(order, transA, transB, M, N, K, alpha, A, lda, B, ldb, beta, C, ldc);
-    printResult("clAmdBlasSgemm Result");
+    printResult("Result");
 
     /* Destroy CL context */
 	ContextDestroy();
